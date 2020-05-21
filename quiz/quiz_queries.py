@@ -53,36 +53,53 @@ FROM `students` group by description order by cast(substring(description, 5) as 
 
     # works with subject text or id and partial topic
     "select text, topic, type, metadata, choices, answer, user_profile "
-    "from items where (subject='{0}' or subject_id='{0}') ORDER BY RAND()",
+    "from items where (subject='{0}') ORDER BY RAND()",
 
     "select text, topic, type, metadata, choices, answer, user_profile "
-    "from items where (subject='{0}' or subject_id='{0}') and "
+    "from items where (subject='{0}') and "
     "topic like '%{1}%' ORDER BY RAND()",
 
     "select id, text, subject, topic, sub_topics, type, choices, answer "
-    "from items where (subject='{0}' or subject_id='{0}') "
+    "from items where (subject='{0}') "
     "ORDER BY RAND() limit {1}", # (9)
 
     "select id, text, subject, topic, sub_topics, type, choices, answer "
-    "from items where (subject='{0}' or subject_id='{0}') and "
+    "from items where (subject='{0}') and "
     "topic like '%{1}%' ORDER BY RAND() limit {2}",
 
-    "select id, text, subject, topic, sub_topics, type, choices, answer, metadata "
+    "select id, text, subject, topic, sub_topics, type, "
+    "choices, metadata, answer "
     "from items where id in ({0})", # for creating quiz (11)
 
-    "SELECT sum(cast(substring(marks, 1) as unsigned)) as total, count(*), name "
-    "FROM `students` group by name order by total desc"
-    ]
+    # get items by user (12)
+    "select id, text, subject, topic, sub_topics, type, choices, metadata, "
+    "private, DATE_FORMAT(timestamp_created, '%Y-%m-%dT%T') as date_created "
+    ", status "
+    "from items where user_id='{0}' limit {1}",
+
+    # get exam by user (13)
+    "select id, name, description, metadata, type, no_of_questions, total_marks "
+    "from exams where user_id='{0}' limit {1}",
+
+]
 
 insert_sqls = [
     "INSERT INTO `questions` (`id`, `text`, `subject`, `subject_id`, " \
-          "`topic`, `topic_id`, `sub_topics`, `sub_topics_id`, `type`, " \
-          "`metadata`, `choices`, `answer`) " \
-          "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+    "`topic`, `topic_id`, `sub_topics`, `sub_topics_id`, `type`, " \
+    "`metadata`, `choices`, `answer`) " \
+    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+
     "INSERT INTO `items` (`id`, `text`, `subject`, `subject_id`, " \
     "`topic`, `topic_id`, `sub_topics`, `sub_topics_id`, `type`, " \
     "`metadata`, `choices`, `answer`, `user_profile`, `user_id`, `private`) " \
-    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+
+    "INSERT INTO exams(`id`, `provider_id`, `name`, " \
+    "`description`, `metadata`, `type`, `no_of_questions`, " \
+    "`total_marks`, `questions`, " \
+    "`external_link`, `user_profile`, `user_id`) " \
+    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+
 ]
 
 db = None

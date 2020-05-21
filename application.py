@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import cross_origin, CORS
+from flask.json import JSONEncoder
 import json
 import sys
 import logging
@@ -27,10 +28,11 @@ from api.analyze_groups import analyze_groups
 from api.topic_rights import calculate_topic_rights, calculate_topic_averages
 
 from quiz.quiz_queries import get_query_result, \
-    get_quizzes_by_names
+    get_quizzes_by_names, decimal_default
 
 from quiz.create_item import insert_item
-from quiz.create_quiz import get_items_db, create_quiz_form_db
+from quiz.create_quiz import get_items_db, \
+    create_quiz_form_db, get_quiz_form_db
 
 
 class RMApp(Flask):
@@ -40,10 +42,16 @@ class RMApp(Flask):
         initialize_config()
 
 
+class CustomJSONEncoder(JSONEncoder):
+    def default(self, obj):
+        return decimal_default(obj)
+
+
 app = RMApp(__name__)
 
 app.config["JSONIFY_PRETTYPRINT_REGULAR"] = True
 CORS(app)
+app.json_encoder = CustomJSONEncoder
 
 logger = logging.getLogger(__name__)
 
@@ -78,7 +86,7 @@ def process_request(fn, json_data=None):
     if pretty_json == 1:
         return jsonify(ans)
     else:
-        return json.dumps(ans)
+        return json.dumps(ans, default=decimal_default)
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -272,6 +280,11 @@ def get_items_sample():
 @app.route('/create_form/', methods=['POST', 'GET'])
 def create_form():
     return process_request(create_quiz_form_db)
+
+
+@app.route("/quiz_account/", methods=['POST', 'GET'])
+def quiz_account():
+    return process_request(get_quiz_form_db)
 
 
 if __name__ == '__main__':

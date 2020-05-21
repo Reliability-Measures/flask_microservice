@@ -105,7 +105,7 @@ def get_sheet(creds=None, sheet_id=None, col_range=None):
 
 if __name__ == '__main__':
     sql_quiz = "INSERT INTO quizzes(`id`, `provider_id`, `name`, " \
-               "`desciption`, `metadata`, `type`, `no_of_questions`, " \
+               "`description`, `metadata`, `type`, `no_of_questions`, " \
                "`total_marks`, `questions`, `timestamp`, `responses`, " \
                "`external_link`) " \
                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
