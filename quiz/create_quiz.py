@@ -1,10 +1,32 @@
 import json
+import logging
 
 from common.config import initialize_config
-from quiz.quiz_queries import queries, connect_and_execute
+from quiz.quiz_queries import queries, connect_and_execute, insert_sqls, \
+    decimal_default
 from providers.google.google_run_app_script import run_app_script, \
     GoogleCredentials
 from quiz.type_map import get_type_from_id
+from providers.myssql_db import MySqlDB
+
+logger = logging.getLogger(__name__)
+
+
+def get_quiz_form_db(json_data):
+    user_id = json_data.get('user_id')
+    limit = json_data.get('limit', 50)
+    sql = queries[12].format(user_id, limit)
+    items = connect_and_execute(sql)
+    for item in items:
+        item['choices'] = json.loads(item.get('choices', {}))
+        item['metadata'] = json.loads(item.get('metadata', {}))
+    sql = queries[13].format(user_id, limit)
+    exams = connect_and_execute(sql)
+    for item in exams:
+        item['metadata'] = json.loads(item.get('metadata', {}))
+
+    return {"items": items, "exams": exams,
+            "items_count": len(items), "exams_count": len(exams)}
 
 
 # returns items from DB for specific filters
@@ -23,7 +45,7 @@ def get_items_db(json_data):
             result['sub_topics'] = json.loads(result['sub_topics'])
         except:
             pass
-        result['answer'] = json.loads(result['answer'])
+        result['answer'] = json.loads(result.get('answer', {}))
 
     return {'items': results, 'total_items': len(results)}
 
@@ -33,24 +55,25 @@ def process_items(results):
     questions = []
     index = 1
     for result in results:
-        metadata = json.loads(result['metadata'])
-        choices = json.loads(result['choices'])
+        metadata = json.loads(result.get('metadata', {}))
+        choices = json.loads(result.get('choices', {}))
         topic = result.get('topic')
+        desc = metadata.get('quiz', '') + topic
         try:
             topic = json.loads(topic)
+            desc = metadata.get('quiz', '')
         except:
             pass
         item = {
-            'question': str(index) + ". " +
-                        result['text'].split(".", 1)[1],
-            'desc': metadata['quiz'] + "-" + topic,
+            'question': str(index) + ". " + result.get('text'),
+            'desc': desc,
             'options': choices,
-            'points': metadata['points'],
+            'points': metadata.get('points'),
             'type': get_type_from_id(result.get('type'), 'google_form'),
-            'feedback_correct': metadata['feedback_correct'],
-            'feedback_incorrect': metadata['feedback_incorrect'],
+            'feedback_correct': metadata.get('feedback_correct'),
+            'feedback_incorrect': metadata.get('feedback_incorrect'),
         }
-        print(item)
+        #print(item)
         questions.append(item)
         index += 1
     return questions
@@ -58,20 +81,49 @@ def process_items(results):
 
 # create quiz from user provided data
 def create_quiz_form_db(json_data):
-    title = json_data.get('quiz_name')
-    desc = json_data.get('quiz_description')
-    ids = json_data.get('item_ids')
-    user_profile = json_data.get('user_profile')
+    items = []
+    user_profile = {}
+    try:
+        title = json_data.get('quiz_name')
+        desc = json_data.get('quiz_description')
+        ids = json_data.get('item_ids')
+        user_profile = json_data.get('user_profile')
 
-    # get items from list of ids
-    sql = queries[11].format(','.join(map(str, ids)))
-    results = connect_and_execute(sql)
-    items = process_items(results)
+        # get items from list of ids
+        sql = queries[11].format(','.join(map(str, ids)))
+        results = connect_and_execute(sql)
+        items = process_items(results)
 
-    creds = GoogleCredentials().get_credential()
-    params = [title, desc, user_profile, items, 0]
-    results = run_app_script(creds, function_name='createQuiz', params=params)
+        creds = GoogleCredentials().get_credential()
+        params = [title, desc, user_profile, items, 0]
+        results = run_app_script(creds, function_name='createQuiz',
+                                 params=params)
+    except Exception as exc:
+         logger.error("Quiz creation exception: " + str(exc))
+         return {"quiz": {}, 'error': str(exc)}
+
     # TODO: save in DB
+    try:
+        metadata_quiz = results.get('metadata')
+        # user_profile = results.get('user_profile', {})
+        values = ('', metadata_quiz.get('id'),
+                  results.get('title'),
+                  results.get('description'),
+                  json.dumps(metadata_quiz, indent=4),
+                  1, metadata_quiz.get('count_items'),
+                  metadata_quiz.get('total_points'),
+                  json.dumps(items, indent=4),
+                  metadata_quiz.get('published_url'),
+                  json.dumps(user_profile, indent=4),
+                  user_profile.get('email')
+                  )
+        #print("****", values)
+        db = MySqlDB()
+        db.connect()
+        db.insert(insert_sqls[2], values)
+    except Exception as exc:
+        print("error", exc)
+        pass
 
     return {"quiz": results}
 
@@ -107,16 +159,21 @@ def create_quiz(subject='Islam', topic=None):
 if __name__ == '__main__':
     initialize_config()
     #print(json.dumps(create_quiz(topic='Seerah'), indent=4))
-
-    ids = [1, 3, 6, 9, 25]
+     # http://api2.reliabilitymeasures.com/create_form/?input={"quiz_description":"Test","quiz_name":"Form 1","item_ids":[2,45,6,9,25]}
+     # http://api2.reliabilitymeasures.com/get_items/?input={"subject":"Islam","limit":10}
+    #ids = [1, 3, 6, 9, 25]
+    ids = [131,132]
     json_data = {'quiz_description': 'Test', 'quiz_name': 'Form 2',
                  'item_ids': ids}
 
     #print(json.dumps(create_quiz_form_db(json_data), indent=4))
 
-    json_data = {'subject': 1,
-                 'limit': 5}
-    print(json.dumps(get_items_db(json_data), indent=4))
+    json_data = {'user_id': "farrukh503@gmail.com", 'limit': 10}
+    print(json.dumps(get_quiz_form_db(json_data), indent=4,
+                     default=decimal_default))
+
+    #json_data = {'subject': "Biology",  'limit': 5}
+    #print(json.dumps(get_items_db(json_data), indent=4))
 
     # sql = queries[11].format(','.join(map(str, ids)))
     # print(sql)

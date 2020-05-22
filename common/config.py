@@ -10,19 +10,36 @@ global config
 cloud_provider = {
     "cloud_host": "dropbox",
     "cloud_config_file": "config.json",
+    "cloud_rm_file": "rm_secrets.json",
     "cloud_access_key": "vDuiM-56ZzsAAAAAAAAHJGw5MRrhkkeJZ0AJhft11_SCePhuuP2XCVGY3pMGvLBn",
+}
+
+secret_config = {
+    "application_client_id": "xxxxx."
+                             "apps.googleusercontent.com",
+
+    "db_provider": {
+        "db_host": "",
+        "db_user": "",
+        "db_password": "",
+        "db_name": "DB"
+    },
+    "db_provider_cloud": {
+        "db_host": "",
+        "db_user": "",
+        "db_password": "",
+        "db_name": "DB"
+    },
 }
 
 # default
 default_config = {
     "application_id": "rm_01",
-    "application_version": "0.4.1",
+    "application_version": "0.4.2",
     "application_name": "Reliability Measures microservices",
     "application_org": "Reliability Measures",
     "application_email": "info@reliabilitymeasures.com",
     "application_short_name": "rm_microservices",
-    "application_client_id": "xxxxx."
-                             "apps.googleusercontent.com",
     "service_url": "http://api.reliabilitymeasures.com/",
     "service2_url": "http://api2.reliabilitymeasures.com/",
     "test_url": "http://localhost:5000/",
@@ -30,12 +47,12 @@ default_config = {
     "classroom_method": "classroom/",
     "sample_method": "sample/",
     "quiz_method": "quiz/",
-    "db_provider": {
-        "db_host": "",
-        "db_user": "",
-        "db_password": "",
-        "db_name": "ReliabilityMeasures_DB"
-    },
+    "item": "item/",
+    "create_item": "create_item/",
+    "edit_item": "edit_item/",
+    "get_items": "get_items/",
+    "create_form": "create_form/",
+    "quiz_account": "quiz_account/",
     "keywords": {
             "exam": "exam",
             "name": "name",
@@ -98,7 +115,7 @@ default_config = {
             "name": "Item discrimination",
             "short_name": "idr",
             "description": "Item discrimination, "
-                           "Point biserial correlation coefficient",
+                           "Point-Biserial correlation coefficient",
             "type": "list of floats"
         },
         {
@@ -209,9 +226,11 @@ default_config = {
 
 class Config:
     config = None
+    secrets = None
 
     def __init__(self):
         self.config = default_config
+        self.secrets = secret_config
 
     def get_keyword_value(self, key):
         return self.config["keywords"][key]
@@ -222,13 +241,15 @@ class Config:
 
     def get_config(self, config_key, sub_key=None):
         if sub_key:
-            self.config.get(config_key, {}).get(sub_key)
+            value = self.config.get(config_key, {}).get(sub_key)
         else:
-            return self.config.get(config_key)
+            value = self.config.get(config_key) or self.secrets.get(config_key)
+        return value
 
     def get_config_from_cloud(self):
         try:
             self.config = get_config_file(cloud_provider)
+            self.secrets = get_config_file(cloud_provider, "cloud_rm_file")
         except Exception as exc:
             print("Config Exception!")
 

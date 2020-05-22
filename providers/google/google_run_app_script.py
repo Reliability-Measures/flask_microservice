@@ -78,7 +78,7 @@ if __name__ == '__main__':
     db = MySqlDB()
     db.connect()
 
-    print(db.query_commit("delete from ramadan_quizzes"))
+    print(db.query_commit("delete from exams"))
     print(db.query_commit("delete from items"))
     print(db.query_commit("ALTER TABLE items AUTO_INCREMENT=1"))
     topics_new = ['Aqeedah', 'Qur`an', 'Fiqh', 'Seerah', 'History']
@@ -146,8 +146,8 @@ if __name__ == '__main__':
         },
         ]
     
-    sql_quiz = "INSERT INTO ramadan_quizzes(`id`, `provider_id`, `name`, " \
-               "`desciption`, `metadata`, `type`, `no_of_questions`, " \
+    sql_quiz = "INSERT INTO exams(`id`, `provider_id`, `name`, " \
+               "`description`, `metadata`, `type`, `no_of_questions`, " \
                "`total_marks`, `questions`, `timestamp`, `responses`, " \
                "`external_link`) " \
                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"

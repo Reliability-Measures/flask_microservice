@@ -1,7 +1,9 @@
 import common.utils as utils
-from common.config import initialize_config
+from common.config import initialize_config, get_config, \
+    get_keyword_value, get_service_config
 
 import tests.expecteds as exp
+
 
 class TestUtils:
     data = None
@@ -644,3 +646,26 @@ class TestUtils:
         method = utils.get_scoring_method(data)
 
         assert method == expected
+
+    def test_get_config(self):
+        expected = "Reliability Measures"
+        assert get_config("application_org") == expected
+
+        # read the secret
+        expected = {
+            "db_host": "",
+            "db_user": "",
+            "db_password": "",
+            "db_name": "DB"
+        }
+        assert get_config("db_provider") == expected
+
+        expected = "kr20"
+        assert get_service_config(1) == expected
+
+        expected = "Item discrimination"
+        assert get_service_config(2, "name") == expected
+
+        # not found
+        expected = None
+        assert get_service_config(5, "title") == expected

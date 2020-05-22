@@ -2,10 +2,10 @@ from dropbox import dropbox
 import json
 
 
-def get_config_file(cloud_config):
+def get_config_file(cloud_config, file='cloud_config_file'):
 
     provider = cloud_config.get('cloud_host')
-    filename = cloud_config.get('cloud_config_file')
+    filename = cloud_config.get(file)
     key = cloud_config.get('cloud_access_key')
 
     if provider == 'dropbox':
@@ -27,12 +27,8 @@ def get_config_file(cloud_config):
 
 
 if __name__ == '__main__':
-    cloud_provider = {
-        'cloud_host': 'dropbox',
-        'cloud_config_file': 'token.pickle',
-        'cloud_access_key': 'vDuiM-56ZzsAAAAAAAAHJGw5MRrhkkeJZ0AJhft11_SCePhuuP2XCVGY3pMGvLBn',
-    }
+    from common.config import cloud_provider
 
-    print(get_config_file(cloud_provider))
+    print(get_config_file(cloud_provider, "cloud_rm_file"))
 
     #print(json.dumps(get_config_file(cloud_provider), indent=4))
