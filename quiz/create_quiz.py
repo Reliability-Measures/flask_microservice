@@ -42,8 +42,8 @@ def get_items_db(json_data):
     subject = json_data.get('subject')
     topic = json_data.get('topic')
     limit = json_data.get('limit', 50)
-    keyword = json_data.get('keyword')
-    user_id = json_data.get('user_id')
+    #keyword = json_data.get('keyword')
+    user_id = json_data.get('user_id', "")
 
     sql = queries[9].format(subject, limit)
     if len(user_id) > 2:
@@ -53,7 +53,7 @@ def get_items_db(json_data):
         if len(user_id) > 2:
             sql = queries[8].format(subject, topic, limit, user_id)
 
-    print(sql)
+    #print(sql)
     results = connect_and_execute(sql)
     results = sorted(results, key=lambda pos: pos['id'])
 
