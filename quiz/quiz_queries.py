@@ -48,38 +48,52 @@ sum(case when marks='1 / 5' then 1 else 0 end) * 100.0/count(*) as one_correct_p
 sum(case when marks='0 / 5' then 1 else 0 end) as zero_correct,
 sum(case when marks='0 / 5' then 1 else 0 end) * 100.0/count(*) as zero_correct_perc 
 FROM `students` group by description order by cast(substring(description, 5) as unsigned)""",
+
     "select name, external_link, cast(substring(name, 5) as unsigned) as number "
         "from quizzes order by cast(substring(name, 5) as unsigned)",
 
-    # works with subject text or id and partial topic
-    "select text, topic, type, metadata, choices, answer, user_profile "
-    "from items where (subject='{0}') ORDER BY RAND()",
+    "select id, text, subject, topic, sub_topics, type, choices, "
+    "answer, metadata, private "
+    "from items where status<>0 and (subject='{0}') and "
+    "(user_id='{2}')"
+    "ORDER BY RAND() limit {1}",  # (7)
 
-    "select text, topic, type, metadata, choices, answer, user_profile "
-    "from items where (subject='{0}') and "
-    "topic like '%{1}%' ORDER BY RAND()",
+    "select id, text, subject, topic, sub_topics, type, choices, "
+    "answer, metadata, private "
+    "from items where status<>0 and (subject='{0}') and "
+    "(user_id='{2}') and topic like '%{1}%'"
+    "ORDER BY RAND() limit {1}",  # (8)
 
-    "select id, text, subject, topic, sub_topics, type, choices, answer "
-    "from items where (subject='{0}') "
-    "ORDER BY RAND() limit {1}", # (9)
+    "select id, text, subject, topic, sub_topics, type, choices, "
+    "answer, metadata from items where "
+    "status<>0 and private=0 and (subject='{0}') "
+    "ORDER BY RAND() limit {1}",  # (9)
 
-    "select id, text, subject, topic, sub_topics, type, choices, answer "
-    "from items where (subject='{0}') and "
-    "topic like '%{1}%' ORDER BY RAND() limit {2}",
+    "select id, text, subject, topic, sub_topics, type, choices, "
+    "answer, metadata "
+    "from items where status<>0 and private=0 and (subject='{0}') and "
+    "topic like '%{1}%' ORDER BY RAND() limit {2}",  # 10
 
     "select id, text, subject, topic, sub_topics, type, "
     "choices, metadata, answer "
-    "from items where id in ({0})", # for creating quiz (11)
+    "from items where id in ({0}) and status<>0",  # for creating quiz (11)
 
     # get items by user (12)
     "select id, text, subject, topic, sub_topics, type, choices, metadata, "
-    "private, DATE_FORMAT(timestamp_created, '%Y-%m-%dT%T') as date_created "
-    ", status "
+    "private, DATE_FORMAT(timestamp_created, '%Y-%m-%dT%T') as date_created, "
+    "DATE_FORMAT(timestamp_updated, '%Y-%m-%dT%T') as date_updated, status "
     "from items where user_id='{0}' limit {1}",
 
     # get exam by user (13)
-    "select id, name, description, metadata, type, no_of_questions, total_marks "
+    "select id, name, description, metadata, type, no_of_questions, "
+    "total_marks, DATE_FORMAT(timestamp, '%Y-%m-%dT%T') as date_created, "
+    "responses, user_profile "
     "from exams where user_id='{0}' limit {1}",
+
+    # students by perc.
+    "SELECT name, age, sum(cast(substring(marks, 1) as unsigned)) as score, "
+    "count(*), 100 * sum(cast(substring(marks, 1) as unsigned))/(5 * count(*) + 5) as perc "
+    "FROM `students` group by name, age order by perc desc"
 
 ]
 
