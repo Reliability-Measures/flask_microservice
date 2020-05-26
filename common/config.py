@@ -1,5 +1,5 @@
 from providers.cloud_handler import get_config_file
-import json
+from common.subjects import subjects
 
 global config
 # JSON object for literals and constants
@@ -10,6 +10,7 @@ global config
 cloud_provider = {
     "cloud_host": "dropbox",
     "cloud_config_file": "config.json",
+    "cloud_subjects_file": "subjects.json",
     "cloud_rm_file": "rm_secrets.json",
     "cloud_access_key": "vDuiM-56ZzsAAAAAAAAHJGw5MRrhkkeJZ0AJhft11_SCePhuuP2XCVGY3pMGvLBn",
 }
@@ -227,10 +228,12 @@ default_config = {
 class Config:
     config = None
     secrets = None
+    subjects = None
 
     def __init__(self):
         self.config = default_config
         self.secrets = secret_config
+        self.subjects = subjects
 
     def get_keyword_value(self, key):
         return self.config["keywords"][key]
@@ -246,9 +249,19 @@ class Config:
             value = self.config.get(config_key) or self.secrets.get(config_key)
         return value
 
+    def get_subject(self, subject_key, sub_key=None):
+        if sub_key:
+            value = self.subjects["subject_list"].get(subject_key, {}).\
+                get(sub_key)
+        else:
+            value = self.subjects["subject_list"].get(subject_key)
+        return value
+
     def get_config_from_cloud(self):
         try:
             self.config = get_config_file(cloud_provider)
+            self.subjects = get_config_file(cloud_provider,
+                                            "cloud_subjects_file")
             self.secrets = get_config_file(cloud_provider, "cloud_rm_file")
         except Exception as exc:
             print("Config Exception!")
@@ -272,3 +285,6 @@ def get_service_config(service_id, field="short_name"):
 def get_keyword_value(key):
     return config.get_keyword_value(key)
 
+
+def get_subjects():
+    return config.subjects.get("subject_list")

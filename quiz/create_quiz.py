@@ -125,7 +125,8 @@ def create_quiz_form_db(json_data):
          logger.error("Quiz creation exception: " + str(exc))
          return {"quiz": {}, 'error': str(exc)}
 
-    # TODO: save in DB
+    # insert in DB
+    exc = None
     try:
         metadata_quiz = results.get('metadata')
         # user_profile = results.get('user_profile', {})
@@ -140,15 +141,15 @@ def create_quiz_form_db(json_data):
                   json.dumps(user_profile, indent=4),
                   user_profile.get('email')
                   )
-        #print("****", values)
+        # print("****", values)
         db = MySqlDB()
         db.connect()
         db.insert(insert_sqls[2], values)
     except Exception as exc:
-        print("error", exc)
+        logger.error("error", exc)
         pass
 
-    return {"quiz": results}
+    return {"quiz": results, "error": str(exc)}
 
 
 # sample quiz
