@@ -145,7 +145,16 @@ if __name__ == '__main__':
             'link': "https://docs.google.com/forms/d/1Lm78M2TWNct_DWKY2DKS8gQNKxBUcL2nBt7fxg8XvHU/edit"
         },
         ]
-    
+
+    quiz_links =[
+        {'link': "https://docs.google.com/forms/d/1Np8ZS9kT0JJ3-aV8Uf-_wfTmn_y37zMMj7lnZS6Pjrk/edit",
+         'quiz': 'Algebra 2'}
+    ]
+
+    subject = "Islam"
+    subject_id = 5
+    topic_list = [topics1, topics2, topics3]
+
     sql_quiz = "INSERT INTO exams(`id`, `provider_id`, `name`, " \
                "`description`, `metadata`, `type`, `no_of_questions`, " \
                "`total_marks`, `questions`, `timestamp`, `responses`, " \
@@ -157,7 +166,9 @@ if __name__ == '__main__':
                "`timestamp_created`, `timestamp_updated`) " \
                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     index = 1
-    topic_list = [topics1, topics2, topics3]
+
+
+    topic_list = [['History', 'Aqeedah', 'Seerah', 'Fiqh', 'Qur`an']]
 
     user_profile = {"googleId": "xxxx",
                     "imageUrl": "yyy",
@@ -216,7 +227,7 @@ if __name__ == '__main__':
             if len(arr[0]) < 3:
                 text = arr[1].strip()
 
-            values = ('', text, 'Islam', 5,
+            values = ('', text, subject, subject_id,
                       topics[i], get_type_id(item.get('type')),
                       json.dumps(metadata, indent=4),
                       json.dumps(item.get('choices'), indent=4),
