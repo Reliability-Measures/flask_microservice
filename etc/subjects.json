@@ -278,6 +278,35 @@
                 {"label": "Current Affairs"},
                 {"label": "Other"}
             ]
+        },
+        {
+            "label": "Computer Technology",
+            "subject_id": 10,
+            "children": [
+                {"label": "Hardware"},
+                {"label": "Software"},
+                {"label": "Programming",
+                    "children": [
+                        {"label": "Python"},
+                        {"label": "Java"},
+                        {"label": "Java Script"},
+                        {"label": "React"},
+                        {"label": "Others"}
+                    ]
+                },
+                {"label": "Security"},
+                {"label": "Cloud Computing"},
+                {"label": "Internet of things"},
+                {"label": "Artificial Intelligence"},
+                {"label": "Data Science/Machine Learning"}
+            ]
+        },
+        {
+            "label": "Other",
+            "subject_id": 99,
+            "children": [
+                {"label": "Other"}
+            ]
         }
     ]
 }

@@ -5,9 +5,8 @@ import json
 import sys
 import logging
 
-from providers.google.get_credentials import GoogleCredentials
-from providers.google.google_classroom import list_courses, \
-    list_students_teachers
+from quiz_routes import quiz_app
+from classroom_routes import classroom_app
 
 from common.config import get_config, initialize_config
 from common.sample import sample
@@ -27,12 +26,8 @@ from api.assumptions import get_assumptions
 from api.analyze_groups import analyze_groups
 from api.topic_rights import calculate_topic_rights, calculate_topic_averages
 
-from quiz.quiz_queries import get_query_result, \
-    get_quizzes_by_names, decimal_default
-
-from quiz.create_item import insert_item
-from quiz.create_quiz import get_items_db, \
-    create_quiz_form_db, get_quiz_form_db
+from process_requests import process_request
+from quiz.quiz_queries import decimal_default
 
 
 class RMApp(Flask):
@@ -48,6 +43,8 @@ class CustomJSONEncoder(JSONEncoder):
 
 
 app = RMApp(__name__)
+app.register_blueprint(quiz_app)
+app.register_blueprint(classroom_app)
 
 app.config["JSONIFY_PRETTYPRINT_REGULAR"] = True
 CORS(app)
@@ -62,33 +59,6 @@ def unhandled_exception(e):
     return index(str(e), 500)
 
 
-def process_request(fn, json_data=None):
-    """
-    A function to convert a JSON formatted string to dict and
-    then call the passed function and return the response.
-
-    :param fn: a function to call
-    :param json_data: str (optional in JSON format)
-    :return: str, a JSON formatted string
-    """
-    pretty_json = 1
-    try:
-        pretty_json = request.args.get('pretty', pretty_json)
-        if not json_data:
-            json_data = request.args.get('input') or request.args.get('json')
-        # print(pretty_json, json_data)
-        inp = json.loads(json_data)
-
-        ans = fn(inp)  # calling function 'fn'
-        ans['Input'] = inp
-    except Exception as exc:
-        ans = {"error": str(exc), 'input': json_data}
-    if pretty_json == 1:
-        return jsonify(ans)
-    else:
-        return json.dumps(ans, default=decimal_default)
-
-
 @app.route('/', methods=['POST', 'GET'])
 def index(error=None, code=200):
     return jsonify(
@@ -100,60 +70,6 @@ def index(error=None, code=200):
             "status_code": code
         }
     )
-
-
-@app.route('/login/', methods=['POST', 'GET'])
-def get_tokens():
-    id_token = request.args.get('id_token')
-    access_token = request.args.get('access_token')
-    app.gc = GoogleCredentials()
-    creds, info = app.gc.get_credential_from_token(id_token, access_token)
-    courses = list_courses(creds)
-    return jsonify({'user': info, 'courses': courses})
-
-
-@app.route('/classroom/', methods=['POST', 'GET'])
-def get_classes():
-    id_token = request.args.get('id_token')
-    access_token = request.args.get('access_token')
-
-    app.gc = GoogleCredentials()
-    if access_token and id_token:
-        creds, info = app.gc.get_credential_from_token(id_token, access_token)
-    else:
-        creds = app.gc.get_credential()  # RM organization courses
-        info = {'name': get_config("application_org"),
-                'email': get_config("application_email")}
-
-    courses = list_courses(creds)
-    return jsonify({'user': info, 'courses': courses})
-
-
-@app.route('/classroom/people', methods=['POST', 'GET'])
-def get_people():
-    course_id = request.args.get('course_id')
-    people = request.args.get('people', 0)  # students by default
-    app.gc = GoogleCredentials()
-    creds = app.gc.get_credential()  # RM organization courses
-
-    result = list_students_teachers(creds,
-                                    teachers=bool(people),
-                                    course_id=course_id)
-    return jsonify(result)
-
-
-@app.route('/quiz/', methods=['POST', 'GET'])
-def get_quiz():
-    name = request.args.get('name')
-    stat = request.args.get('stat')
-    age = request.args.get('age')
-    ignore_case = bool(request.args.get('ignore_case', 'true'))
-    all_responses = bool(request.args.get('all_responses', 'true'))
-    if stat:
-        results = get_query_result(id=stat)
-    else:
-        results = get_quizzes_by_names(name, ignore_case, all_responses, age)
-    return jsonify(results)
 
 
 @app.route('/std/', methods=['POST', 'GET'])
@@ -256,35 +172,6 @@ def get_topic_averages():
 @cross_origin()
 def get_sample_analysis():
     return process_request(analyze_test, json.dumps(sample))
-
-
-@app.route('/item/', methods=['POST'])
-@app.route('/create_item/', methods=['POST'])
-def put_item():
-    return process_request(insert_item)
-
-
-@app.route('/get_items/', methods=['POST', 'GET'])
-def get_items():
-    return process_request(get_items_db)
-
-
-@app.route('/get_items_sample', methods=['POST', 'GET'])
-def get_items_sample():
-    return process_request(
-        get_items_db,
-        json.dumps({'subject': 'Islam', 'topic': 'Aqeedah'})
-    )
-
-
-@app.route('/create_form/', methods=['POST', 'GET'])
-def create_form():
-    return process_request(create_quiz_form_db)
-
-
-@app.route("/quiz_account/", methods=['POST', 'GET'])
-def quiz_account():
-    return process_request(get_quiz_form_db)
 
 
 if __name__ == '__main__':

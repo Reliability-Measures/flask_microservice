@@ -22,7 +22,7 @@ function helloWorld() {
 
 SAMPLE_MANIFEST = '''
 {
-  "timeZone": "America/New_York",
+  "timeZone": "America/Chicago",
   "exceptionLogging": "CLOUD"
 }
 '''.strip()
