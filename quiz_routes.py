@@ -3,8 +3,9 @@ from flask.blueprints import Blueprint
 
 from process_requests import process_request
 from quiz.create_item import insert_item
-from quiz.create_quiz import get_items_db, \
-    create_quiz_form_db, get_quiz_form_db, create_quiz_sample, search_quiz
+from quiz.create_quiz import create_quiz_form_db,  create_quiz_sample
+from quiz.get_quiz import get_items_db, get_quiz_form_db,  \
+    search_quiz, get_quiz_responses
 
 quiz_app = Blueprint('quiz_app', __name__)
 
@@ -46,3 +47,8 @@ def quiz_account():
 @quiz_app.route('/get_form/', methods=['POST', 'GET'])
 def get_form():
     return process_request(search_quiz)
+
+
+@quiz_app.route('/get_responses/', methods=['POST', 'GET'])
+def get_form():
+    return process_request(get_quiz_responses)

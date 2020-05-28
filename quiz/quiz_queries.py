@@ -103,13 +103,13 @@ FROM `students` group by description order by cast(substring(description, 5) as 
     "select id, text, subject, topic, sub_topics, type, choices, metadata, "
     "private, DATE_FORMAT(timestamp_created, '%Y-%m-%dT%T') as date_created, "
     "DATE_FORMAT(timestamp_updated, '%Y-%m-%dT%T') as date_updated, status "
-    "from items where user_id='{0}' order by date_updated limit {1}",
+    "from items where user_id='{0}' order by date_updated desc limit {1}",
 
     # get exam by user (13)
     "select id, name, description, metadata, type, no_of_questions, "
     "total_marks, DATE_FORMAT(timestamp, '%Y-%m-%dT%T') as date_created, "
     "responses, user_profile "
-    "from exams where user_id='{0}' order by date_created limit {1} ",
+    "from exams where user_id='{0}' order by date_created desc limit {1} ",
 
     # get exam by id and name (14)
     "select id, name, description, metadata, type, no_of_questions, "

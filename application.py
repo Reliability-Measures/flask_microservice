@@ -169,7 +169,6 @@ def get_topic_averages():
 
 @app.route('/sample', methods=['POST', 'GET'])
 @app.route('/sample/', methods=['POST', 'GET'])
-@cross_origin()
 def get_sample_analysis():
     return process_request(analyze_test, json.dumps(sample))
 
