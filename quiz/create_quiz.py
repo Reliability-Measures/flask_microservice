@@ -1,6 +1,6 @@
 import json
 import time
-import datetime
+import socket
 import logging
 import threading
 
@@ -71,6 +71,7 @@ def create_quiz_thread(title, desc, results, options, user_profile, new_id):
 
         credentials = GoogleCredentials().get_credential()
         params = [title, desc, user_profile, items, options]
+        socket.setdefaulttimeout(180)
         script_results = run_app_script(credentials,
                                         function_name='createQuiz',
                                         params=params)

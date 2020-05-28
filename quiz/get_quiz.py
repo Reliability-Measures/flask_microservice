@@ -1,6 +1,7 @@
 import json
 import time
 import logging
+import socket
 
 
 from common.config import initialize_config
@@ -95,15 +96,14 @@ def get_quiz_responses(json_data):
     edit_url = json_data.get('edit_url')
     params = [edit_url]
     credentials = GoogleCredentials().get_credential()
+    socket.setdefaulttimeout(180)
     results = run_app_script(credentials,
                              function_name='getQuizResponses',
                              params=params)
     responses = results.get('responses', [])
-    # TODO Converto to json format needed for Item Analysis
+    # TODO Convert to json format needed for Item Analysis
     # Call Analyze_test and send analysis data in the below dict
     quiz_analysis = {}
-
-    print(results.get('response_count'), len(responses))
 
     return {"quiz_responses": results, 'quiz_analysis': quiz_analysis}
 
@@ -126,8 +126,14 @@ if __name__ == '__main__':
     #                 default=decimal_default))
 
     json_data = {'edit_url': 'https://docs.google.com/forms/d/1DEUSZfBvcZIaL4c255z6boYHrNhcbg6A93JQqvUNUzY/edit'}
-    print(json.dumps(get_quiz_responses(json_data), indent=4,
+    json_data = {"edit_url": "https://docs.google.com/forms/d/1-OepgpNqVpHU45OE_Sn4IZJAviOCF_E_Jd1wkTt2pHM/edit"}
+    results = get_quiz_responses(json_data)
+    print(json.dumps(results, indent=4,
                      default=decimal_default))
+    responses = results.get("quiz_responses")
+    print("Items:", len(responses.get('items')))
+    print("Students:", len(responses.get('students')))
+    print("Responses:", len(responses.get('responses')))
 
     et = time.monotonic() - st
     print(et)
