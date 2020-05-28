@@ -1,5 +1,6 @@
 import json
 from flask.blueprints import Blueprint
+from flask_cors import CORS
 
 from process_requests import process_request
 from quiz.create_item import insert_item
@@ -9,6 +10,7 @@ from quiz.get_quiz import get_items_db, get_quiz_form_db,  \
 
 quiz_app = Blueprint('quiz_app', __name__)
 
+CORS(quiz_app)
 
 @quiz_app.route('/item/', methods=['POST'])
 @quiz_app.route('/create_item/', methods=['POST'])

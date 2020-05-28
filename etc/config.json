@@ -1,6 +1,6 @@
 {
     "application_id": "rm_01",
-    "application_version": "0.6.0",
+    "application_version": "0.6.1",
     "application_name": "Reliability Measures microservices",
     "application_org": "Reliability Measures",
     "application_email": "info@reliabilitymeasures.com",
@@ -20,6 +20,7 @@
     "create_form_sample": "create_form_sample/",
     "get_form": "get_form/",
     "quiz_account": "quiz_account/",
+    "get_responses": "get_responses/",
     "keywords": {
             "exam": "exam",
             "name": "name",
@@ -36,7 +37,6 @@
             "response": "response",
             "id": "id",
             "group": "group",
-
             "item_topics": "item_topics",
             "tags": "tags",
             "scored": "scored",

@@ -1,7 +1,7 @@
 import json
 from flask import request, jsonify
 from flask.blueprints import Blueprint
-
+from flask_cors import CORS
 
 from common.config import get_config
 from quiz.quiz_queries import get_query_result, \
@@ -11,7 +11,7 @@ from providers.google.google_classroom import list_courses, \
     list_students_teachers
 
 classroom_app = Blueprint('classroom_app', __name__)
-
+CORS(classroom_app)
 
 @classroom_app.route('/login/', methods=['POST', 'GET'])
 def get_tokens():
