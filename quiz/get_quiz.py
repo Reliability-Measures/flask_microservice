@@ -114,7 +114,7 @@ def get_quiz_responses(json_data):
         for k in i:
             for j in exam_info['student_list']:
                 if str(k.get('student_id')) == j['id']:
-                    j['item_responses'].append({'item_id': k.get('item_id'), 'response': k.get('score')})
+                    j['item_responses'].append({'item_id': str(k.get('item_id')), 'response': k.get('score')})
 
     quiz_analysis = analyze_test(exam_info)['analysis']
 
