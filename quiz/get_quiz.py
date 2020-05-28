@@ -99,9 +99,13 @@ def get_quiz_responses(json_data):
                              function_name='getQuizResponses',
                              params=params)
     responses = results.get('responses', [])
+    # TODO Converto to json format needed for Item Analysis
+    # Call Analyze_test and send analysis data in the below dict
+    quiz_analysis = {}
+
     print(results.get('response_count'), len(responses))
 
-    return {"quiz_responses": results}
+    return {"quiz_responses": results, 'quiz_analysis': quiz_analysis}
 
 
 if __name__ == '__main__':

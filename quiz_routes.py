@@ -52,5 +52,5 @@ def get_form():
 
 
 @quiz_app.route('/get_responses/', methods=['POST', 'GET'])
-def get_form():
+def get_responses():
     return process_request(get_quiz_responses)

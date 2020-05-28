@@ -13,6 +13,7 @@ from providers.google.google_classroom import list_courses, \
 classroom_app = Blueprint('classroom_app', __name__)
 CORS(classroom_app)
 
+
 @classroom_app.route('/login/', methods=['POST', 'GET'])
 def get_tokens():
     id_token = request.args.get('id_token')
