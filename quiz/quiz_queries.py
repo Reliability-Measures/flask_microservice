@@ -103,18 +103,26 @@ FROM `students` group by description order by cast(substring(description, 5) as 
     "select id, text, subject, topic, sub_topics, type, choices, metadata, "
     "private, DATE_FORMAT(timestamp_created, '%Y-%m-%dT%T') as date_created, "
     "DATE_FORMAT(timestamp_updated, '%Y-%m-%dT%T') as date_updated, status "
-    "from items where user_id='{0}' limit {1}",
+    "from items where user_id='{0}' order by date_updated desc limit {1}",
 
     # get exam by user (13)
     "select id, name, description, metadata, type, no_of_questions, "
     "total_marks, DATE_FORMAT(timestamp, '%Y-%m-%dT%T') as date_created, "
     "responses, user_profile "
-    "from exams where user_id='{0}' limit {1}",
+    "from exams where user_id='{0}' order by date_created desc limit {1} ",
 
-    # students by perc.
-    "SELECT name, age, sum(cast(substring(marks, 1) as unsigned)) as score, "
-    "count(*), 100 * sum(cast(substring(marks, 1) as unsigned))/(5 * count(*) + 5) as perc "
-    "FROM `students` group by name, age order by perc desc"
+    # get exam by id and name (14)
+    "select id, name, description, metadata, type, no_of_questions, "
+    "total_marks, DATE_FORMAT(timestamp, '%Y-%m-%dT%T') as date_created, "
+    "responses, user_profile, tags "
+    "from exams where id={0} and name='{1}'",
+
+    # get exam by keyword. tags (15)
+    "select id, name, description, metadata, type, no_of_questions, "
+    "total_marks, DATE_FORMAT(timestamp, '%Y-%m-%dT%T') as date_created, "
+    "responses, user_profile, tags "
+    "from exams where searchable<>0 and name like '%{0}%' or "
+    "description like '%{0}%' or tags like '%{0}%'"
 
 ]
 
@@ -129,11 +137,14 @@ insert_sqls = [
     "`metadata`, `choices`, `answer`, `user_profile`, `user_id`, `private`) " \
     "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
 
-    "INSERT INTO exams(`id`, `provider_id`, `name`, " \
+    "REPLACE INTO exams(`id`, `provider_id`, `name`, " \
     "`description`, `metadata`, `type`, `no_of_questions`, " \
     "`total_marks`, `questions`, " \
-    "`external_link`, `user_profile`, `user_id`) " \
-    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    "`external_link`, `user_profile`, `user_id`, `tags`, `searchable`) " \
+    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+
+    "INSERT INTO exams(`id`, `name`, `description`) " \
+    "VALUES (%s, %s, %s)"
 
 ]
 

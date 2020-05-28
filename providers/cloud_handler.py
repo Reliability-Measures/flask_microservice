@@ -29,6 +29,6 @@ def get_config_file(cloud_config, file='cloud_config_file'):
 if __name__ == '__main__':
     from common.config import cloud_provider
 
-    print(get_config_file(cloud_provider, "cloud_rm_file"))
+    print(get_config_file(cloud_provider, "cloud_subjects_file"))
 
     #print(json.dumps(get_config_file(cloud_provider), indent=4))

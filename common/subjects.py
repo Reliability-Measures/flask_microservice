@@ -1,35 +1,5 @@
-{
+subjects = {
     "subject_list": [
-        {
-            "label": "Islam",
-            "subject_id": 5,
-            "children": [
-                {
-                    "label": "Aqeedah"
-                },
-                {
-                    "label": "Qur`an"
-                },
-                {
-                    "label": "Hadith"
-                },
-                {
-                    "label": "Fiqh"
-                },
-                {
-                    "label": "History"
-                },
-                {
-                    "label": "Seerah"
-                },
-                {
-                    "label": "Akhlaq/Manners"
-                },
-                {
-                    "label": "Islamic Finance"
-                }
-            ]
-        },
         {
             "label": "Mathematics",
             "subject_id": 0,
@@ -203,6 +173,27 @@
             ]
         },
         {
+            "label": "Islam",
+            "subject_id": 5,
+            "children": [
+                {
+                    "label": "Aqeedah"
+                },
+                {
+                    "label": "Fiqh"
+                },
+                {
+                    "label": "History"
+                },
+                {
+                    "label": "Qur`an"
+                },
+                {
+                    "label": "Seerah"
+                }
+            ]
+        },
+        {
             "label": "English",
             "subject_id": 6,
             "children": [
@@ -263,12 +254,12 @@
             "label": "Art",
             "subject_id": 8,
             "children": [
-                {"label": "Fine Art"},
-                {"label": "Visual Art"},
-                {"label": "Applied Art"},
-                {"label": "Performing Art"},
-                {"label": "Literary Art"},
-                {"label": "Calligraphy"}
+                {"label": 'Fine Art'},
+                {"label": 'Visual Art'},
+                {"label": 'Applied Art'},
+                {"label": 'Performing Art'},
+                {"label": 'Literary Art'},
+                {"label": 'Calligraphy'}
             ]
         },
         {
@@ -276,35 +267,6 @@
             "subject_id": 9,
             "children": [
                 {"label": "Current Affairs"},
-                {"label": "Other"}
-            ]
-        },
-        {
-            "label": "Computer Technology",
-            "subject_id": 10,
-            "children": [
-                {"label": "Hardware"},
-                {"label": "Software"},
-                {"label": "Programming",
-                    "children": [
-                        {"label": "Python"},
-                        {"label": "Java"},
-                        {"label": "Java Script"},
-                        {"label": "React"},
-                        {"label": "Others"}
-                    ]
-                },
-                {"label": "Security"},
-                {"label": "Cloud Computing"},
-                {"label": "Internet of things"},
-                {"label": "Artificial Intelligence"},
-                {"label": "Data Science/Machine Learning"}
-            ]
-        },
-        {
-            "label": "Other",
-            "subject_id": 99,
-            "children": [
                 {"label": "Other"}
             ]
         }

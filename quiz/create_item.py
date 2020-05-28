@@ -1,8 +1,7 @@
 import json
 
 from providers.myssql_db import MySqlDB
-from common.config import initialize_config
-from quiz.subjects import subjects as subjects_json
+from common.config import initialize_config, get_subjects
 from quiz.type_map import get_type_id
 from quiz.quiz_queries import insert_sqls
 
@@ -35,7 +34,8 @@ def insert_item(item_data):
     item_type = get_type_id(tags.get('item_type'))
 
     # Getting subject, topic, and hierarchy info
-    subject_list = subjects_json.get('subject_list')
+    subject_list = get_subjects()
+
     paths = tags.get('paths')
     subject = tags.get('subject')
     subject_id = None

@@ -1,6 +1,5 @@
 import common.utils as utils
-from common.config import initialize_config, get_config, \
-    get_keyword_value, get_service_config
+from common.config import initialize_config, get_config, get_service_config
 
 import tests.expecteds as exp
 
