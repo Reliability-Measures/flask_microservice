@@ -4,6 +4,7 @@ import logging
 import socket
 
 
+from api.analyze_test import analyze_test
 from common.config import initialize_config
 from quiz.quiz_queries import queries, connect_and_execute, decimal_default
 from providers.google.google_run_app_script import run_app_script, \
@@ -103,7 +104,19 @@ def get_quiz_responses(json_data):
     responses = results.get('responses', [])
     # TODO Convert to json format needed for Item Analysis
     # Call Analyze_test and send analysis data in the below dict
-    quiz_analysis = {}
+    exam_info = {'exam': {'name': results.get('title')}, 'student_list': []}
+
+    for i in results.get('students'):
+        curr_id = str(i[0].get('student_id'))
+        exam_info['student_list'].append({'id': curr_id, 'item_responses': []})
+
+    for i in results.get('responses'):
+        for k in i:
+            for j in exam_info['student_list']:
+                if str(k.get('student_id')) == j['id']:
+                    j['item_responses'].append({'item_id': str(k.get('item_id')), 'response': k.get('score')})
+
+    quiz_analysis = analyze_test(exam_info)['analysis']
 
     return {"quiz_responses": results, 'quiz_analysis': quiz_analysis}
 
@@ -126,14 +139,14 @@ if __name__ == '__main__':
     #                 default=decimal_default))
 
     json_data = {'edit_url': 'https://docs.google.com/forms/d/1DEUSZfBvcZIaL4c255z6boYHrNhcbg6A93JQqvUNUzY/edit'}
-    json_data = {"edit_url": "https://docs.google.com/forms/d/1-OepgpNqVpHU45OE_Sn4IZJAviOCF_E_Jd1wkTt2pHM/edit"}
+    # json_data = {"edit_url": "https://docs.google.com/forms/d/1-OepgpNqVpHU45OE_Sn4IZJAviOCF_E_Jd1wkTt2pHM/edit"}
     results = get_quiz_responses(json_data)
     print(json.dumps(results, indent=4,
                      default=decimal_default))
-    responses = results.get("quiz_responses")
-    print("Items:", len(responses.get('items')))
-    print("Students:", len(responses.get('students')))
-    print("Responses:", len(responses.get('responses')))
+    # responses = results.get("quiz_responses")
+    # print("Items:", len(responses.get('items')))
+    # print("Students:", len(responses.get('students')))
+    # print("Responses:", len(responses.get('responses')))
 
     et = time.monotonic() - st
     print(et)
