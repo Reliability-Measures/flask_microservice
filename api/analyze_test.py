@@ -56,9 +56,12 @@ def analyze_test(param):
               'student_scores': []}
 
     for i in val_difficulty['difficulty']:
+        curr_idr = val_idr['idr']
+        if type(curr_idr) is not str:
+            curr_idr = val_idr['idr'][i]
         result['item_analysis'].append({'item_id': i,
                                         'difficulty': val_difficulty['difficulty'][i],
-                                        'idr': val_idr['idr'][i],
+                                        'idr': curr_idr,
                                         'num_correct': val_num_correct['num_correct'][i]})
 
     for i in val_scores['scores']:

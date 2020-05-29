@@ -77,10 +77,13 @@ def analyze_groups(param):
                   'student_scores': []}
 
         for k in val_difficulty['difficulty']:
+            curr_idr = val_idr['idr']
+            if curr_idr is not str:
+                curr_idr = val_idr['idr'][k]
             result['item_analysis'].append({'item_id': k,
-                                            'difficulty': val_difficulty['difficulty'][k],
-                                            'idr': val_idr['idr'][k],
-                                            'num_correct': val_num_correct['num_correct'][k]})
+                                        'difficulty': val_difficulty['difficulty'][k],
+                                        'idr': curr_idr,
+                                        'num_correct': val_num_correct['num_correct'][k]})
 
         for k in val_scores['scores']:
             result['student_scores'].append({'student': k,
