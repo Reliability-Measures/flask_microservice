@@ -159,33 +159,10 @@ class TestFunctions:
             ]
         }
 
-        expected = {"analysis": {
-                        "assumptions": {"3": {"assumed": ["3"]}},
-                        "average": 0.444,
-                        "diff_avg": 0.556,
-                        "difficulty": {"1": 0.667,
-                                    "2": 0.333,
-                                    "3": 0.667},
-                        "exclude": ["1"],
-                        "group_analysis": "No groups were found, or all students are in the same group",
-                        "idr": {"1": -0.037,
-                                "2": 0.037,
-                                "3": 0.074},
-                        "idr_avg": 0.025,
-                        "kr20": -3.0,
-                        "num_correct": {"1": 1,
-                                        "2": 2,
-                                        "3": 1},
-                        "scores": {"1": 0.333,
-                                "2": 0.667,
-                                "3": 0.333},
-                        "topic_avgs": "No topics were found",
-                        "topic_rights": "No topics were found",
-                        "weighted_avg": 0.4,
-                        "weighted_scores": {"1": 0.4,
-                                            "2": 0.6,
-                                            "3": 0.2}},
-                    }
+        expected = {'analysis': {'assumptions': {'3': {'assumed': ['3']}}, 'exclude': ['1'], 'group_analysis': 'No groups were found, or all students are in the same group', 'item_analysis': [{'difficulty': 0.667, 'idr': -0.037, 'item_id': '1', 'num_correct': 1},
+                  {'difficulty': 0.333, 'idr': 0.037, 'item_id': '2', 'num_correct': 2}, {'difficulty': 0.667, 'idr': 0.074, 'item_id': '3', 'num_correct': 1}], 'overall_items': {'diff_avg': 0.556, 'idr_avg': 0.025},    
+          'overall_quiz': {'average': 0.444, 'kr20': -3.0, 'weighted_avg': 0.4}, 'student_scores': [{'score': 0.333,  'student': '1',  'weighted_score': 0.4}, {'score': 0.667,  'student': '2',  'weighted_score': 0.6},      
+                           {'score': 0.333,  'student': '3',  'weighted_score': 0.2}], 'topic_avgs': 'No topics were found', 'topic_rights': 'No topics were found'}}
         analysis = analyze_test(data)
 
         assert analysis == expected
@@ -266,23 +243,7 @@ class TestFunctions:
             ]
         }
 
-        expected = {"analysis": {"assumptions": {"2": {"assumed": ["2"]},
-                                                 "3": {"assumed": ["1", "2"]}},
-                                "average": 0.167,
-                                "diff_avg": 0.834,
-                                "difficulty": {"1": 0.667, "2": 1.0},
-                                "exclude": "Invalid data - No mean",
-                                "group_analysis": "No groups were found, or all "
-                                                    "students are in the same group",
-                                "idr": "Invalid data - No mean",
-                                "idr_avg": "Invalid data - No mean",
-                                "kr20": -0.0,
-                                "num_correct": {"1": 1, "2": 0},
-                                "scores": {"1": 0.5, "2": 0.0, "3": 0.0},
-                                "topic_avgs": "No topics were found",
-                                "topic_rights": "No topics were found",
-                                "weighted_avg": 0.133,
-                                "weighted_scores": {"1": 0.4, "2": 0.0, "3": 0.0}}}
+        expected = {'analysis': {'assumptions': {'2': {'assumed': ['2']}, '3': {'assumed': ['1', '2']}}, 'exclude': 'Invalid data - No mean', 'group_analysis': 'No groups were found, or all students are in '   'the same group', 'item_analysis': [{'difficulty': 0.667,    'idr': 'Invalid data - No mean', 'item_id': '1',    'num_correct': 1},   {'difficulty': 1.0,    'idr': 'Invalid data - No mean', 'item_id': '2',    'num_correct': 0}], 'overall_items': {'diff_avg': 0.834,   'idr_avg': 'Invalid data - No mean'}, 'overall_quiz': {'average': 0.167,  'kr20': -0.0,  'weighted_avg': 0.133}, 'student_scores': [{'score': 0.5,     'student': '1', 'weighted_score': 0.4},    {'score': 0.0,     'student': '2',     'weighted_score': 0.0},    {'score': 0.0,     'student': '3',     'weighted_score': 0.0}], 'topic_avgs': 'No topics were found', 'topic_rights': 'No topics were found'}}
         analysis = analyze_test(data)
 
         assert analysis == expected

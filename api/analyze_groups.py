@@ -68,11 +68,29 @@ def analyze_groups(param):
                     curr_assumptions[k] = assumptions[k]
         val_assumptions = {assumptions_key: curr_assumptions}
 
-        result = {}
-        items = [val_kr20, val_idr, val_difficulty,
-                 val_scores, val_average, val_weighted_s,
-                 val_weighted_avg, val_excludes, val_diff_avg,
-                 val_idr_avg, val_num_correct, val_assumptions,
+        result = {'overall_quiz': {'average': val_average['average'],
+                                   'kr20': val_kr20['kr20'],
+                                   'weighted_avg': val_weighted_avg['weighted_avg']},
+                  'overall_items': {'diff_avg': val_diff_avg['diff_avg'],
+                                    'idr_avg': val_idr_avg['idr_avg']},
+                  'item_analysis': [],
+                  'student_scores': []}
+
+        for k in val_difficulty['difficulty']:
+            curr_idr = val_idr['idr']
+            if curr_idr is not str:
+                curr_idr = val_idr['idr'][k]
+            result['item_analysis'].append({'item_id': k,
+                                        'difficulty': val_difficulty['difficulty'][k],
+                                        'idr': curr_idr,
+                                        'num_correct': val_num_correct['num_correct'][k]})
+
+        for k in val_scores['scores']:
+            result['student_scores'].append({'student': k,
+                                             'score': val_scores['scores'][k],
+                                             'weighted_score': val_weighted_s['weighted_scores'][k]})
+
+        items = [val_excludes, val_assumptions,
                  val_topic_rights, val_topic_avgs]
         for item in items:
             result.update(item)

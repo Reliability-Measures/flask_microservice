@@ -251,8 +251,8 @@ class TestFunctions:
     def test_analyze(self):
         expected = exp.test_analysis
 
-        analysis = analyze_test(self.data)
-        assert analysis == expected
+        analysis = json.dumps(analyze_test(self.data))
+        assert json.loads(analysis) == expected
 
     # testing the kr_20
     def test_kr20(self):
@@ -344,9 +344,9 @@ class TestFunctions:
     # testing analysis by group
     def test_group_analysis(self):
         expected = exp.group_analysis
-        analysis = analyze_groups(self.data)["group_analysis"]
+        analysis = json.dumps(analyze_groups(self.data)["group_analysis"])
 
-        assert analysis == expected
+        assert json.loads(analysis) == expected
 
     # testing topic scores
     def test_topic_score(self):
