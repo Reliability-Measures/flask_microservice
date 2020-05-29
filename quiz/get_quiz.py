@@ -48,7 +48,7 @@ def get_items_db(json_data):
 
 def get_quiz_form_db(json_data):
     user_id = json_data.get('user_id')
-    limit = json_data.get('limit', 100)
+    limit = json_data.get('limit', 500)
 
     # get all items by user
     sql = queries[12].format(user_id, limit)
@@ -66,6 +66,8 @@ def get_quiz_form_db(json_data):
     exams = connect_and_execute(sql)
     for item in exams:
         item['metadata'] = json.loads(item.get('metadata', {}))
+        item['analysis'] = json.loads(item.get('analysis', {}))
+        item['user_profile'] = json.loads(item.get('user_profile', {}))
 
     return {"items": items, "exams": exams,
             "items_count": len(items), "exams_count": len(exams)}
@@ -110,11 +112,13 @@ def get_quiz_responses(json_data):
         curr_id = str(i[0].get('student_id'))
         exam_info['student_list'].append({'id': curr_id, 'item_responses': []})
 
-    for i in results.get('responses'):
+    for i in responses:
         for k in i:
             for j in exam_info['student_list']:
                 if str(k.get('student_id')) == j['id']:
-                    j['item_responses'].append({'item_id': str(k.get('item_id')), 'response': k.get('score')})
+                    j['item_responses'].append({
+                        'item_id': str(k.get('item_id')),
+                        'response': k.get('score')})
 
     quiz_analysis = analyze_test(exam_info)['analysis']
 
@@ -139,7 +143,7 @@ if __name__ == '__main__':
     #                 default=decimal_default))
 
     json_data = {'edit_url': 'https://docs.google.com/forms/d/1DEUSZfBvcZIaL4c255z6boYHrNhcbg6A93JQqvUNUzY/edit'}
-    # json_data = {"edit_url": "https://docs.google.com/forms/d/1-OepgpNqVpHU45OE_Sn4IZJAviOCF_E_Jd1wkTt2pHM/edit"}
+    json_data = {"edit_url": "https://docs.google.com/forms/d/1-OepgpNqVpHU45OE_Sn4IZJAviOCF_E_Jd1wkTt2pHM/edit"}
     results = get_quiz_responses(json_data)
     print(json.dumps(results, indent=4,
                      default=decimal_default))

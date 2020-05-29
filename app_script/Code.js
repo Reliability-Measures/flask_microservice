@@ -269,51 +269,52 @@ function getQuizResponses(form_url) {
   response_list = []
   student_list = []
   var formResponses = form.getResponses();
-  for (var i = 0; i < formResponses.length; i++) {
-      var formResponse = formResponses[i];
-      var itemResponses = formResponse.getItemResponses();
-      students = []
-      responses = []
-      for (var j = 0; j < itemResponses.length; j++) {
-        var itemResponse = itemResponses[j];
-        var type = itemResponse.getItem().getType()
-        var response =  itemResponse.getResponse()
-        //Logger.info(typeof(response))
 
-        if (type == 'MULTIPLE_CHOICE' || type == 'CHECKBOX') {
-
-          var resp = {student_id: parseInt(i + 1), item_id: parseInt(j), score: 1, student_response:response}
-          var item = {item_id: parseInt(j), item_text: itemResponse.getItem().getTitle(), item_type: type}
-          var q_item = (type == 'MULTIPLE_CHOICE' ? itemResponse.getItem().asMultipleChoiceItem() : itemResponse.getItem().asCheckboxItem());
-          var choices = q_item.getChoices()
-          var points = q_item.getPoints();
-          if (!points || points==0) continue;
-          correct_answer = []
-          for (var k = 0; k < choices.length; k++) {
-            var correct_ans = choices[k].isCorrectAnswer()
-            var ch = choices[k].getValue()
-            if (correct_ans) correct_answer.push(ch)
-            //Logger.info(ch)
-            //Logger.info(correct_ans)
-            var correct = (typeof(response) === 'string' ? ch == response : response.indexOf(ch) >= 0)
-            //Logger.info(correct)
-            if (correct !== correct_ans)
-               resp['score'] = 0
-          }
-          item['correct_answer'] = correct_answer
-          responses.push(resp)
-          Logger.info(resp)
-          if (i==0) items.push(item)
-        }
-        else {
-          var student = {student_id: parseInt(i + 1), student_response:response, text: itemResponse.getItem().getTitle(), item_type: type}
-          students.push(student)
-          Logger.info(student)
-        }
-      }
-      student_list.push(students)
-      response_list.push(responses)
-  }
+//  for (var i = 0; i < formResponses.length; i++) {
+//      var formResponse = formResponses[i];
+//      var itemResponses = formResponse.getItemResponses();
+//      students = []
+//      responses = []
+//      for (var j = 0; j < itemResponses.length; j++) {
+//        var itemResponse = itemResponses[j];
+//        var type = itemResponse.getItem().getType()
+//        var response =  itemResponse.getResponse()
+//        //Logger.info(typeof(response))
+//
+//        if (type == 'MULTIPLE_CHOICE' || type == 'CHECKBOX') {
+//
+//          var resp = {student_id: parseInt(i + 1), item_id: parseInt(j), score: 1, student_response:response}
+//          var item = {item_id: parseInt(j), item_text: itemResponse.getItem().getTitle(), item_type: type}
+//          var q_item = (type == 'MULTIPLE_CHOICE' ? itemResponse.getItem().asMultipleChoiceItem() : itemResponse.getItem().asCheckboxItem());
+//          var choices = q_item.getChoices()
+//          var points = q_item.getPoints();
+//          if (!points || points==0) continue;
+//          correct_answer = []
+//          for (var k = 0; k < choices.length; k++) {
+//            var correct_ans = choices[k].isCorrectAnswer()
+//            var ch = choices[k].getValue()
+//            if (correct_ans) correct_answer.push(ch)
+//            //Logger.info(ch)
+//            //Logger.info(correct_ans)
+//            var correct = (typeof(response) === 'string' ? ch == response : response.indexOf(ch) >= 0)
+//            //Logger.info(correct)
+//            if (correct !== correct_ans)
+//               resp['score'] = 0
+//          }
+//          item['correct_answer'] = correct_answer
+//          responses.push(resp)
+//          Logger.info(resp)
+//          if (i==0) items.push(item)
+//        }
+//        else {
+//          var student = {student_id: parseInt(i + 1), student_response:response, text: itemResponse.getItem().getTitle(), item_type: type}
+//          students.push(student)
+//          Logger.info(student)
+//        }
+//      }
+//      student_list.push(students)
+//      response_list.push(responses)
+//  }
 
   var file = DriveApp.getFileById(form.getId());
   var metadata = {
@@ -328,12 +329,13 @@ function getQuizResponses(form_url) {
     title: form.getTitle(),
     description: form.getDescription(),
     responses_count: parseInt(formResponses.length),
-    responses: response_list,
-    students: student_list,
-    items: items,
+    responses: formResponses
+//    responses: response_list,
+//    students: student_list,
+//    items: items,
     metadata: metadata
   }
-  //Logger.log(responses)
+  Logger.log(responses)
   return(response)
 
 }

@@ -108,7 +108,7 @@ FROM `students` group by description order by cast(substring(description, 5) as 
     # get exam by user (13)
     "select id, name, description, metadata, type, no_of_questions, "
     "total_marks, DATE_FORMAT(timestamp, '%Y-%m-%dT%T') as date_created, "
-    "responses, user_profile "
+    "responses, user_profile, analysis, tags, searchable "
     "from exams where user_id='{0}' order by date_created desc limit {1} ",
 
     # get exam by id and name (14)
