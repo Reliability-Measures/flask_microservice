@@ -65,12 +65,15 @@ def get_quiz_form_db(json_data):
     sql = queries[13].format(user_id, limit)
     exams = connect_and_execute(sql)
     for item in exams:
-        item['metadata'] = json.loads(item.get('metadata', {}))
-        item['analysis'] = json.loads(item.get('analysis', {}))
-        item['user_profile'] = json.loads(item.get('user_profile', {}))
+        item['metadata'] = json.loads(item.get('metadata') or '{}')
+        item['user_profile'] = json.loads(item.get('user_profile') or '{}')
+        #print(item.get('analysis'))
+        item['analysis'] = json.loads(item.get('analysis') or '{}')
 
-    return {"items": items, "exams": exams,
-            "items_count": len(items), "exams_count": len(exams)}
+    return {"items": items,
+            "exams": exams,
+            "items_count": len(items),
+            "exams_count": len(exams)}
 
 
 def search_quiz(json_data):
@@ -97,9 +100,11 @@ def search_quiz(json_data):
 
 def get_quiz_responses(json_data):
     edit_url = json_data.get('edit_url')
-    params = [edit_url]
+    provider_id = json_data.get('provider_id')
+    responses = json_data.get('responses')
+    params = [edit_url or provider_id, int(responses)]
     credentials = GoogleCredentials().get_credential()
-    socket.setdefaulttimeout(180)
+    socket.setdefaulttimeout(300)
     results = run_app_script(credentials,
                              function_name='getQuizResponses',
                              params=params)
@@ -122,16 +127,16 @@ def get_quiz_responses(json_data):
 
     quiz_analysis = analyze_test(exam_info)['analysis']
 
-    return {"quiz_responses": results, 'quiz_analysis': quiz_analysis}
+    return {"quiz_analysis": quiz_analysis}
 
 
 if __name__ == '__main__':
     st = time.monotonic()
     initialize_config()
 
-    # json_data = {'user_id': "farrukh503@gmail.com", 'limit': 10}
-    # print(json.dumps(get_quiz_form_db(json_data), indent=4,
-    #                 default=decimal_default))
+    json_data = {'user_id': "info@reliabilitymeasures.com", 'limit': 10}
+    print(json.dumps(get_quiz_form_db(json_data), indent=4,
+                     default=decimal_default))
 
     #json_data = {'subject': "", 'limit': 5, "user_id": ""}
     #print(json.dumps(get_items_db(json_data), indent=4))
@@ -144,9 +149,9 @@ if __name__ == '__main__':
 
     json_data = {'edit_url': 'https://docs.google.com/forms/d/1DEUSZfBvcZIaL4c255z6boYHrNhcbg6A93JQqvUNUzY/edit'}
     json_data = {"edit_url": "https://docs.google.com/forms/d/1-OepgpNqVpHU45OE_Sn4IZJAviOCF_E_Jd1wkTt2pHM/edit"}
-    results = get_quiz_responses(json_data)
-    print(json.dumps(results, indent=4,
-                     default=decimal_default))
+    #results = get_quiz_responses(json_data)
+    #print(json.dumps(results, indent=4,
+    #                 default=decimal_default))
     # responses = results.get("quiz_responses")
     # print("Items:", len(responses.get('items')))
     # print("Students:", len(responses.get('students')))
