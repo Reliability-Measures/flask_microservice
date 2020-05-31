@@ -5,8 +5,8 @@ import socket
 
 
 from api.analyze_test import analyze_test
-from common.config import initialize_config
-from quiz.quiz_queries import queries, connect_and_execute, decimal_default
+from common.config import initialize_config, get_config
+from quiz.quiz_queries import queries, connect_and_query, decimal_default
 from providers.google.google_run_app_script import run_app_script, \
     GoogleCredentials
 
@@ -30,7 +30,7 @@ def get_items_db(json_data):
             sql = queries[8].format(subject, topic, limit, user_id)
 
     # print(sql)
-    results = connect_and_execute(sql)
+    results = connect_and_query(sql)
     results = sorted(results, key=lambda pos: pos['id'])
 
     for result in results:
@@ -48,11 +48,20 @@ def get_items_db(json_data):
 
 def get_quiz_form_db(json_data):
     user_id = json_data.get('user_id')
+    user_profile = json_data.get('user_profile')
     limit = json_data.get('limit', 500)
 
+    user_email = user_profile.get('email')
+    user_id = user_profile.get('googleId')
+
     # get all items by user
-    sql = queries[12].format(user_id, limit)
-    items = connect_and_execute(sql)
+    sql = queries[12].format(user_email, limit)
+    # get all items for admin
+    if user_email in get_config("admin_users") and \
+            user_id in get_config("admin_user_ids"):
+        sql = queries[16].format(limit)
+
+    items = connect_and_query(sql)
     for item in items:
         item['choices'] = json.loads(item.get('choices', {}))
         item['metadata'] = json.loads(item.get('metadata', {}))
@@ -61,9 +70,15 @@ def get_quiz_form_db(json_data):
             item['sub_topics'] = json.loads(item['sub_topics'])
         except:
             pass
+
     # get all quizzes by user
-    sql = queries[13].format(user_id, limit)
-    exams = connect_and_execute(sql)
+    sql = queries[13].format(user_email, limit)
+    # for admin, get all quizzes
+    if user_email in get_config("admin_users") and \
+            user_id in get_config("admin_user_ids"):
+        sql = queries[17].format(limit)
+
+    exams = connect_and_query(sql)
     for item in exams:
         item['metadata'] = json.loads(item.get('metadata') or '{}')
         item['user_profile'] = json.loads(item.get('user_profile') or '{}')
@@ -83,10 +98,10 @@ def search_quiz(json_data):
     results = []
     if id and name:
         sql = queries[14].format(id, name)
-        results = connect_and_execute(sql)
+        results = connect_and_query(sql)
     if keyword:
         sql = queries[15].format(keyword)
-        results = connect_and_execute(sql)
+        results = connect_and_query(sql)
 
     for result in results:
         result['user_profile'] = json.loads(result.get('user_profile') or '{}')
@@ -134,7 +149,10 @@ if __name__ == '__main__':
     st = time.monotonic()
     initialize_config()
 
-    json_data = {'user_id': "info@reliabilitymeasures.com", 'limit': 10}
+    print(get_config("admin_users"))
+    print(get_config("admin_user_ids"))
+
+    json_data = {'user_id': "info@reliabilitymeasures.com", 'limit': 5}
     print(json.dumps(get_quiz_form_db(json_data), indent=4,
                      default=decimal_default))
 

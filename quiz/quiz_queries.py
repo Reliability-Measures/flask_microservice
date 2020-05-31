@@ -5,8 +5,8 @@ from providers.myssql_db import MySqlDB
 from common.config import initialize_config
 
 queries = [
-    "select `id`, date_format(`creation_date`, '%Y-%c-%d %H:%i:%s') as created_at,"
-    "`marks`, `name`, `description`,`age`, `city`, `state`, " \
+    "select `id`, `marks`, `name`, `description`,`age`, `city`, `state`, "
+    "date_format(`creation_date`, '%Y-%c-%d %H:%i:%s') as created_at,"
     "`school`, `responses` from students where name='{0}'",
 
     "select `id`, date_format(`creation_date`, '%Y-%c-%d %H:%i:%s') "
@@ -106,10 +106,13 @@ FROM `students` group by description order by cast(substring(description, 5) as 
     "from items where user_id='{0}' order by date_updated desc limit {1}",
 
     # get exam by user (13)
-    "select id, provider_id, name, description, metadata, type, no_of_questions, "
-    "total_marks, DATE_FORMAT(timestamp, '%Y-%m-%dT%T') as date_created, "
+    "select id, provider_id, name, description, metadata, "
+    "type, no_of_questions, total_marks, "
+    "DATE_FORMAT(timestamp, '%Y-%m-%dT%T') as date_created, "
     "responses, user_profile, analysis, tags, searchable "
-    "from exams where user_id like '%{0}%' order by date_created desc limit {1} ",
+    "from exams where user_id='{0}' order by responses desc, "
+    "date_created desc "
+    "limit {1} ",
 
     # get exam by id and name (14)
     "select id, name, description, metadata, type, no_of_questions, "
@@ -122,7 +125,20 @@ FROM `students` group by description order by cast(substring(description, 5) as 
     "total_marks, DATE_FORMAT(timestamp, '%Y-%m-%dT%T') as date_created, "
     "responses, user_profile, tags "
     "from exams where searchable<>0 and name like '%{0}%' or "
-    "description like '%{0}%' or tags like '%{0}%'"
+    "description like '%{0}%' or tags like '%{0}%'",
+
+    # get all items for admins (16)
+    "select id, text, subject, topic, sub_topics, type, choices, metadata, "
+    "private, DATE_FORMAT(timestamp_created, '%Y-%m-%dT%T') as date_created, "
+    "DATE_FORMAT(timestamp_updated, '%Y-%m-%dT%T') as date_updated, status "
+    "from items order by date_updated desc limit {0}",
+
+    # get all exams for admins (17)
+    "select id, provider_id, name, description, metadata, "
+    "type, no_of_questions, total_marks, "
+    "DATE_FORMAT(timestamp, '%Y-%m-%dT%T') as date_created, "
+    "responses, user_profile, analysis, tags, searchable "
+    "from exams order by responses desc, date_created desc limit {0} ",
 
 ]
 
@@ -157,7 +173,7 @@ def decimal_default(obj):
     raise TypeError
 
 
-def connect_and_execute(sql, is_dict=True):
+def connect_and_query(sql, is_dict=True):
     global db
     if not db:
         db = MySqlDB()
@@ -172,16 +188,31 @@ def connect_and_execute(sql, is_dict=True):
     return results
 
 
+# for any SQL command like
+def connect_and_execute(sql, value):
+    global db
+    if not db:
+        db = MySqlDB()
+        db.connect()
+    try:
+        results = db.insert(sql, value)
+    except Exception as exc:
+        db.connect()
+        results = db.insert(sql, value)
+
+    return results
+
+
 def get_query_result(query=None, id=None):
     id = int(id)
     if id >= len(queries):
         return {'error': 'No queries'}
 
     if id:
-        return json.loads(json.dumps(connect_and_execute(queries[id]),
+        return json.loads(json.dumps(connect_and_query(queries[id]),
                                      default=decimal_default))
     elif query:
-        return connect_and_execute(query)
+        return connect_and_query(query)
     else:
         return {}
 
@@ -199,7 +230,7 @@ def get_quizzes_by_names(name, ignore_case=False,
         sql = query.format(name, age)
     else:
         sql = query.format(name if not ignore_case else name.lower())
-    results = connect_and_execute(sql)
+    results = connect_and_query(sql)
     total = 0
     percentile = rank = total_score = 0
     no_quizzes = len(results)
