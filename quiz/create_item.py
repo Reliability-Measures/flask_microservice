@@ -160,7 +160,7 @@ if __name__ == '__main__':
       ]
     }
 
-    insert_item(item)
+    print(insert_item(item))
 
     #from providers.myssql_db import MySqlDB
     #sql = "SELECT * FROM `questions`"

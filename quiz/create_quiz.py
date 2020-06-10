@@ -36,12 +36,19 @@ def process_items(results):
         except:
             tags.add(topic)
 
+        item_type = get_type_from_id(result.get('type'), 'google_form')
+        count_correct = 0
+        for choice in choices:
+            count_correct += int(choice.get('correct') or 0)
+
+        if count_correct > 1:  # Checkboxes
+            item_type = get_type_from_id(1, 'google_form')
         item = {
             'question': str(index) + ". " + result.get('text'),
             'description': desc,
             'options': choices,
             'points': metadata.get('points'),
-            'type': get_type_from_id(result.get('type'), 'google_form'),
+            'type': item_type,
             'feedback_correct': metadata.get('feedback_correct'),
             'feedback_incorrect': metadata.get('feedback_incorrect'),
         }
@@ -204,12 +211,12 @@ if __name__ == '__main__':
     # http://api2.reliabilitymeasures.com/create_form/?input={"quiz_description":"Test","quiz_name":"Form 1","item_ids":[2,45,6,9,25]}
     # http://api2.reliabilitymeasures.com/get_items/?input={"subject":"Islam","limit":10}
 
-    ids = [178,      179,      181,      182]
+    ids = [199,198,197]
 
     # ids = [131,132]
     json_data = {'quiz_description': 'Test main', 'quiz_name': 'Form main',
                  'item_ids': ids, 'options': {}}
-    #print(json.dumps(create_quiz_form_db(json_data), indent=4))
+    print(json.dumps(create_quiz_form_db(json_data), indent=4))
 
     # json_data = {'user_id': "farrukh503@gmail.com", 'limit': 10}
     # print(json.dumps(get_quiz_form_db(json_data), indent=4,

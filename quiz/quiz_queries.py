@@ -140,6 +140,20 @@ FROM `students` group by description order by cast(substring(description, 5) as 
     "responses, user_profile, analysis, tags, searchable "
     "from exams order by responses desc, date_created desc limit {0} ",
 
+    # get items by subject and keyword (18)
+    "select id, text, subject, topic, sub_topics, type, choices, "
+    "answer, metadata from items where "
+    "status<>0 and private=0 and (subject='{0}') and "
+    "(text like '%{1}%' or topic like '%{1}%' or choices like '%{1}%') "
+    "ORDER BY RAND() limit {2}",
+
+    # get items by subject and keyword and user (19)
+    "select id, text, subject, topic, sub_topics, type, choices, "
+    "answer, metadata from items where "
+    "status<>0 and private=0 and (subject='{0}') and (user_id='{3}') and "
+    "(text like '%{1}%' or topic like '%{1}%' or choices like '%{1}%') "
+    "ORDER BY RAND() limit {2}",
+
 ]
 
 insert_sqls = [
@@ -150,14 +164,18 @@ insert_sqls = [
 
     "INSERT INTO `items` (`id`, `text`, `subject`, `subject_id`, " \
     "`topic`, `topic_id`, `sub_topics`, `sub_topics_id`, `type`, " \
-    "`metadata`, `choices`, `answer`, `user_profile`, `user_id`, `private`) " \
-    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+    "`metadata`, `choices`, `answer`, `user_profile`, `user_id`, `private`, "
+    "timestamp_created, timestamp_updated) " \
+    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
+    "UTC_TIMESTAMP(), UTC_TIMESTAMP())",
 
     "REPLACE INTO exams(`id`, `provider_id`, `name`, " \
     "`description`, `metadata`, `type`, `no_of_questions`, " \
     "`total_marks`, `questions`, " \
-    "`external_link`, `user_profile`, `user_id`, `tags`, `searchable`) " \
-    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+    "`external_link`, `user_profile`, `user_id`, `tags`,"
+    " `searchable`, `timestamp`) " \
+    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
+    "UTC_TIMESTAMP())",
 
     "INSERT INTO exams(`id`, `name`, `description`) " \
     "VALUES (%s, %s, %s)"

@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 def get_items_db(json_data):
     subject = json_data.get('subject')
     topic = json_data.get('topic')
+    keyword = json_data.get('keyword')
     limit = json_data.get('limit', 50)
     # keyword = json_data.get('keyword')
     user_id = json_data.get('user_id', "")
@@ -28,6 +29,10 @@ def get_items_db(json_data):
         sql = queries[10].format(subject, topic, limit)
         if len(user_id) > 2:
             sql = queries[8].format(subject, topic, limit, user_id)
+    if keyword:
+        sql = queries[18].format(subject, keyword, limit)
+        if len(user_id) > 2:
+            sql = queries[19].format(subject, keyword, limit, user_id)
 
     # print(sql)
     results = connect_and_query(sql)
@@ -153,20 +158,20 @@ if __name__ == '__main__':
     print(get_config("admin_user_ids"))
 
     json_data = {'user_id': "info@reliabilitymeasures.com", 'limit': 5}
-    print(json.dumps(get_quiz_form_db(json_data), indent=4,
-                     default=decimal_default))
+    #print(json.dumps(get_quiz_form_db(json_data), indent=4,
+    #                 default=decimal_default))
 
-    #json_data = {'subject': "", 'limit': 5, "user_id": ""}
-    #print(json.dumps(get_items_db(json_data), indent=4))
-
+    json_data = {'subject': "Islam", 'limit': 5, "user_id": "",
+                 "keyword": "Scholar"}
+    print(json.dumps(get_items_db(json_data), indent=4))
 
     json_data = {'id': 98, 'name': 'test'}
     json_data = {'keyword': '2020'}
     #print(json.dumps(search_quiz(json_data), indent=4,
     #                 default=decimal_default))
 
-    json_data = {'edit_url': 'https://docs.google.com/forms/d/1DEUSZfBvcZIaL4c255z6boYHrNhcbg6A93JQqvUNUzY/edit'}
-    json_data = {"edit_url": "https://docs.google.com/forms/d/1-OepgpNqVpHU45OE_Sn4IZJAviOCF_E_Jd1wkTt2pHM/edit"}
+    #json_data = {'edit_url': 'https://docs.google.com/forms/d/1DEUSZfBvcZIaL4c255z6boYHrNhcbg6A93JQqvUNUzY/edit'}
+    #json_data = {"edit_url": "https://docs.google.com/forms/d/1-OepgpNqVpHU45OE_Sn4IZJAviOCF_E_Jd1wkTt2pHM/edit"}
     #results = get_quiz_responses(json_data)
     #print(json.dumps(results, indent=4,
     #                 default=decimal_default))
