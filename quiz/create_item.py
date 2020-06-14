@@ -1,9 +1,8 @@
 import json
 
-from providers.myssql_db import MySqlDB
 from common.config import initialize_config, get_subjects
 from quiz.type_map import get_type_id
-from quiz.quiz_queries import insert_sqls
+from quiz.quiz_queries import insert_sqls, connect_and_execute
 
 
 # function to process the question from UI
@@ -107,9 +106,6 @@ def insert_item(item_data):
               topic_id, sub_topics, sub_ids, item_type,
               metadata, choices, answers)
 
-    db = MySqlDB()
-    db.connect()
-
     values2 = (tags.get('id', ''), tags.get('item_text', ''),
                subject, subject_id, topic,
                topic_id, sub_topics, sub_ids, item_type,
@@ -118,8 +114,9 @@ def insert_item(item_data):
                user_profile.get('email'), private
                )
 
-    db.insert(sql2, values2)
-    return {'response': db.insert(sql, values)}
+    resp = connect_and_execute(sql2, values2)
+    resp = connect_and_execute(sql, values)
+    return {'response': resp}
 
 
 if __name__ == '__main__':
@@ -163,7 +160,9 @@ if __name__ == '__main__':
       ]
     }
 
-    insert_item(item)
+    print(insert_item(item))
+
+    #from providers.myssql_db import MySqlDB
     #sql = "SELECT * FROM `questions`"
     #db = MySqlDB()
     #db.connect()

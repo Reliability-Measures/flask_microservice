@@ -5,12 +5,12 @@ import logging
 import threading
 
 from common.config import initialize_config
-from quiz.quiz_queries import queries, connect_and_execute, insert_sqls, \
-    decimal_default
+from quiz.quiz_queries import queries, connect_and_query, insert_sqls, \
+     connect_and_execute
 from providers.google.google_run_app_script import run_app_script, \
     GoogleCredentials
 from quiz.type_map import get_type_from_id
-from providers.myssql_db import MySqlDB
+
 
 logger = logging.getLogger(__name__)
 
@@ -36,12 +36,19 @@ def process_items(results):
         except:
             tags.add(topic)
 
+        item_type = get_type_from_id(result.get('type'), 'google_form')
+        count_correct = 0
+        for choice in choices:
+            count_correct += int(choice.get('correct') or 0)
+
+        if count_correct > 1:  # Checkboxes
+            item_type = get_type_from_id(1, 'google_form')
         item = {
             'question': str(index) + ". " + result.get('text'),
             'description': desc,
             'options': choices,
             'points': metadata.get('points'),
-            'type': get_type_from_id(result.get('type'), 'google_form'),
+            'type': item_type,
             'feedback_correct': metadata.get('feedback_correct'),
             'feedback_incorrect': metadata.get('feedback_incorrect'),
         }
@@ -107,9 +114,7 @@ def create_quiz_thread(title, desc, results, options, user_profile, new_id):
                   user_profile.get('email'), tags, str(searchable)
                   )
         # print("****", values)
-        db = MySqlDB()
-        db.connect()
-        db.insert(insert_sqls[2], values)
+        connect_and_execute(insert_sqls[2], values)
     except Exception as exc:
         logger.error("error", exc)
 
@@ -119,7 +124,7 @@ def create_quiz_form_db(json_data, sql=None):
 
     new_id = ''
     try:
-        max_id = connect_and_execute("select max(id) as max_id from exams")
+        max_id = connect_and_query("select max(id) as max_id from exams")
         new_id = int(max_id[0].get("max_id")) + 1
         title = json_data.get('quiz_name')
         desc = json_data.get('quiz_description', '')
@@ -127,15 +132,13 @@ def create_quiz_form_db(json_data, sql=None):
         user_profile = json_data.get('user_profile', {})
         options = json_data.get('options', {})
         # create exam in DB
-        db = MySqlDB()
-        db.connect()
         values = (str(new_id), title, desc)
-        db.insert(insert_sqls[3], values)
+        connect_and_execute(insert_sqls[3], values)
 
         # get items
         if not sql:
             sql = queries[11].format(','.join(map(str, ids)))
-        results = connect_and_execute(sql)
+        results = connect_and_query(sql)
 
         # do actual creation in a thread
         if json_data:
@@ -158,7 +161,7 @@ def create_quiz(subject='Islam', topic=None):
     if topic:
         sql = queries[10].format(subject, topic, 15)
 
-    results = connect_and_execute(sql)
+    results = connect_and_query(sql)
     # print(json.dumps(results, indent=4))
     items, tags = process_items(results)
     user = json.loads(results[0].get('metadata', {}))
@@ -208,12 +211,12 @@ if __name__ == '__main__':
     # http://api2.reliabilitymeasures.com/create_form/?input={"quiz_description":"Test","quiz_name":"Form 1","item_ids":[2,45,6,9,25]}
     # http://api2.reliabilitymeasures.com/get_items/?input={"subject":"Islam","limit":10}
 
-    ids = [178,      179,      181,      182]
+    ids = [199,198,197]
 
     # ids = [131,132]
     json_data = {'quiz_description': 'Test main', 'quiz_name': 'Form main',
                  'item_ids': ids, 'options': {}}
-    #print(json.dumps(create_quiz_form_db(json_data), indent=4))
+    print(json.dumps(create_quiz_form_db(json_data), indent=4))
 
     # json_data = {'user_id': "farrukh503@gmail.com", 'limit': 10}
     # print(json.dumps(get_quiz_form_db(json_data), indent=4,
@@ -224,7 +227,7 @@ if __name__ == '__main__':
 
     # sql = queries[11].format(','.join(map(str, ids)))
     # print(sql)
-    # res = connect_and_execute(sql)
+    # res = connect_and_query(sql)
     # print(json.dumps(res, indent=4))
 
     #print(create_quiz_sample({}))
