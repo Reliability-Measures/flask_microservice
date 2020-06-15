@@ -222,12 +222,12 @@ def connect_and_execute(sql, value):
 
 
 def get_query_result(query=None, id=None):
-    id = int(id)
-    if id >= len(queries):
+    id2 = int(id)
+    if id2 >= len(queries):
         return {'error': 'No queries'}
 
-    if id:
-        return json.loads(json.dumps(connect_and_query(queries[id]),
+    if id2:
+        return json.loads(json.dumps(connect_and_query(queries[id2]),
                                      default=decimal_default))
     elif query:
         return connect_and_query(query)
@@ -316,3 +316,4 @@ if __name__ == '__main__':
     #print(json.dumps(get_quizzes_by_names('nazli', True, True, 51),
     #                 indent=4, default=decimal_default))
     # print(get_query_result(queries[1].format('Matin'.lower())))
+    print(get_query_result(id='5'))
