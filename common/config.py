@@ -287,4 +287,6 @@ def get_keyword_value(key):
 
 
 def get_subjects():
+    global config
+    config = Config()
     return config.subjects.get("subject_list")
