@@ -48,40 +48,33 @@ quiz_url = "https://www.sanfoundry.com/python-questions-answers-variable-names/"
 class MyHTMLParser(HTMLParser):
     start_tag = None
     questions = []
+    answers = []
 
     def handle_starttag(self, tag, attrs):
         if tag == 'p':
             self.start_tag = tag
-            # print("Encountered a start tag:", tag)
+            print("Encountered a start tag:", tag)
 
     def handle_endtag(self, tag):
-        if self.start_tag:
-            # print("Encountered an end tag :", tag)
+        if tag == self.start_tag:
+            print("Encountered an end tag :", tag)
             self.start_tag = None
 
     def handle_data(self, data):
-        if self.start_tag and data.split('.')[0].isdigit():
+        if self.start_tag:
             print("Encountered some data  :", data)
-            self.questions.append(data.split('.')[1][1:len(data.split('.')[1])])
 
 
 # WIP
 def parse_html(url):
-    items = []
+    questions = []
     r = requests.get(url)
     parser = MyHTMLParser()
     parser.feed(r.text)
     for i in parser.questions:
-        item = {
-            "tags": {
-                "item_text": i,
-                "item_type": "Multiple Choice",
-            },
-            "item_choices": []
-        }
-        item['tags']['item_text'] = i
-        items.append(item)
-    return items
+        questions.append(i)
+    return questions
 
 
-print(parse_html(quiz_url))
+parse_html(quiz_url)
+# print(parse_html(quiz_url))

@@ -13,8 +13,15 @@ def create_items_from_file():
     answers = []
     f = open("aws CCL sample exam.txt", "r")
     reached_ans = False
-    i = 0
+    got_question = False
     item = {
+        "user_profile": {
+            "googleId": "",
+            "imageUrl": "",
+            "email": "info@reliabilitymeasures.com",
+            "name": "reliabilitymeasures.com",
+            "givenName": "Reliability Measures"
+        },
         "tags": {
             "item_text": "",
             "item_type": "Multiple Choice",
@@ -28,9 +35,16 @@ def create_items_from_file():
             questions.append(item)
             reached_ans = True
         elif not reached_ans:
-            if i == 5:
+            if line == '\n':
                 questions.append(item)
                 item = {
+                    "user_profile": {
+                        "googleId": "",
+                        "imageUrl": "",
+                        "email": "info@reliabilitymeasures.com",
+                        "name": "reliabilitymeasures.com",
+                        "givenName": "Reliability Measures"
+                    },
                     "tags": {
                         "item_text": "",
                         "item_type": "Multiple Choice",
@@ -38,13 +52,12 @@ def create_items_from_file():
                     },
                     "item_choices": []
                 }
-                i = 0
-            if i == 0:
+                got_question = False
+            elif not got_question:
                 item['tags']['item_text'] = line.split(') ')[1].replace('\n', '')
-                i += 1
-            elif i < 5:
+                got_question = True
+            else:
                 item['item_choices'].append({'choice': line.split(') ')[1].replace('\n', ''), 'correct': 0})
-                i += 1
         else:
             answers.append(ord(line.split(') ')[1][0])-65)
 
