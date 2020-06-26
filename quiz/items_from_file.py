@@ -8,7 +8,7 @@ https://umich.instructure.com/files/2330198/download?download_frd=1&verifier=hwd
 
 
 # Plan: convert questions from site into same format as 'aws CCL sample exam.txt' with scraper, then run this function.
-def create_items_from_file(file):
+def create_items_from_file(file, subject):
     questions = []
     answers = []
     f = open(file, "r")
@@ -25,41 +25,66 @@ def create_items_from_file(file):
         "tags": {
             "item_text": "",
             "item_type": "Multiple Choice",
-            "subject": "AWS"
+            "subject": subject
         },
         "item_choices": []
     }
 
+    # for line in f:
+    #     if line == 'Answers\n':
+    #         questions.append(item)
+    #         reached_ans = True
+    #     elif not reached_ans:
+    #         if line == '\n':
+    #             questions.append(item)
+    #             item = {
+    #                 "user_profile": {
+    #                     "googleId": "",
+    #                     "imageUrl": "",
+    #                     "email": "info@reliabilitymeasures.com",
+    #                     "name": "reliabilitymeasures.com",
+    #                     "givenName": "Reliability Measures"
+    #                 },
+    #                 "tags": {
+    #                     "item_text": "",
+    #                     "item_type": "Multiple Choice",
+    #                     "subject": "AWS"
+    #                 },
+    #                 "item_choices": []
+    #             }
+    #             got_question = False
+    #         elif not got_question:
+    #             item['tags']['item_text'] = line.split(') ')[1].replace('\n', '')
+    #             got_question = True
+    #         else:
+    #             item['item_choices'].append({'choice': line.split(') ')[1].replace('\n', ''), 'correct': 0})
+    #     else:
+    #         answers.append(ord(line.split(') ')[1][0].upper())-65)
+
     for line in f:
-        if line == 'Answers\n':
+        if line == '\n':
             questions.append(item)
-            reached_ans = True
-        elif not reached_ans:
-            if line == '\n':
-                questions.append(item)
-                item = {
-                    "user_profile": {
-                        "googleId": "",
-                        "imageUrl": "",
-                        "email": "info@reliabilitymeasures.com",
-                        "name": "reliabilitymeasures.com",
-                        "givenName": "Reliability Measures"
-                    },
-                    "tags": {
-                        "item_text": "",
-                        "item_type": "Multiple Choice",
-                        "subject": "AWS"
-                    },
-                    "item_choices": []
-                }
-                got_question = False
-            elif not got_question:
-                item['tags']['item_text'] = line.split(') ')[1].replace('\n', '')
-                got_question = True
-            else:
-                item['item_choices'].append({'choice': line.split(') ')[1].replace('\n', ''), 'correct': 0})
-        else:
-            answers.append(ord(line.split(') ')[1][0].upper())-65)
+            item = {
+                "user_profile": {
+                    "googleId": "",
+                    "imageUrl": "",
+                    "email": "info@reliabilitymeasures.com",
+                    "name": "reliabilitymeasures.com",
+                    "givenName": "Reliability Measures"
+                },
+                "tags": {
+                    "item_text": "",
+                    "item_type": "Multiple Choice",
+                    "subject": "AWS"
+                },
+                "item_choices": []
+            }
+        elif len(line.split('. ')) > 1:
+            item['tags']['item_text'] = line.split('. ')[1].replace('\n', '')
+        elif len(line.split(') ')) > 1:
+            item['item_choices'].append({'choice': line.split(') ')[1].replace('\n', ''), 'correct': 0})
+        elif len(line.split(': ')) > 1:
+            answers.append(ord(line.split(': ')[1][0].upper())-65)
 
     for j in questions:
         ans = answers[questions.index(j)]
@@ -69,6 +94,6 @@ def create_items_from_file(file):
     return questions
 
 
-items = create_items_from_file("sanfoundry1.txt")
+items = create_items_from_file("sanfoundry2.txt", "Computer Science")
 for i in items:
     insert_item(i)
