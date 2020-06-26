@@ -1,0 +1,768 @@
+This set of Python Multiple Choice Questions & Answers (MCQs) focuses on “Core Data Types”.1. Which of these in not a core data type?
+a) Lists
+b) Dictionary
+c) Tuples
+d) Class
+View Answer Answer: d
+Explanation: Class is a user defined data type. 
+
+
+advertisement
+
+
+    var adpushup = adpushup || {};
+    adpushup.que = adpushup.que || [];
+    adpushup.que.push(function() {
+        adpushup.triggerAd("e5da93a0-b61a-4789-96be-a57ebec165b0");
+    });
+
+
+
+	2. Given a function that does not return any value, What value is thrown by default when executed in shell.
+a) int
+b) bool
+c) void
+d) None
+View Answer Answer: d
+Explanation: Python shell throws a NoneType object back. 
+3. What will be the output of the following Python code?a) he
+b) lo
+c) olleh
+d) hello
+View Answer Answer: a
+Explanation: We are printing only the 1st two bytes of string and hence the answer is “he”. 
+4. Which of the following will run without errors?
+a) round(45.8)
+b) round(6352.898,2,5)
+c) round()
+d) round(7463.123,2,1)
+View Answer Answer: a
+Explanation: Execute help(round) in the shell to get details of the parameters that are passed into the round function.
+5. What is the return type of function id?
+a) int
+b) float
+c) bool
+d) dict
+View Answer Answer: a
+Explanation: Execute help(id) to find out details in python shell.id returns a integer value that is unique.
+
+
+advertisement
+
+
+    var adpushup = adpushup || {};
+    adpushup.que = adpushup.que || [];
+    adpushup.que.push(function() {
+        adpushup.triggerAd("fdd9bf87-4faf-4493-82b4-e5538b31931a");
+    });
+
+
+
+	6. In python we do not specify types, it is directly interpreted by the compiler, so consider the following operation to be performed.objective is to make sure x has a integer value, select all that apply (python 3.xx)
+a) x = 13 // 2
+b) x = int(13 / 2)
+c) x = 13 % 2
+d) All of the mentioned
+View Answer Answer: d
+Explanation: // is integer operation in python 3.0 and int(..) is a type cast operator.
+7. What error occurs when you execute the following Python code snippet?a) SyntaxError
+b) NameError
+c) ValueError
+d) TypeError
+View Answer Answer: b
+Explanation: Mango is not defined hence name error.
+8. What will be the output of the following Python code snippet?a) indentation Error
+b) cannot perform mathematical operation on strings
+c) hello2
+d) hello2hello2
+View Answer Answer: a
+Explanation: Python codes have to be indented properly.
+
+
+advertisement
+
+
+    var adpushup = adpushup || {};
+    adpushup.que = adpushup.que || [];
+    adpushup.que.push(function() {
+        adpushup.triggerAd("21eae76a-c83f-42b0-aec5-01d590a53f37");
+    });
+
+
+
+	9. What data type is the object below?a) list
+b) dictionary
+c) array
+d) tuple
+View Answer Answer: a
+Explanation: List data type can store any values within it.
+10. In order to store values in terms of key and value we use what core data type.
+a) list
+b) tuple
+c) class
+d) dictionary
+View Answer Answer: d
+Explanation: Dictionary stores values in terms of keys and values.
+11. Which of the following results in a SyntaxError?
+a) ‘”Once upon a time…”, she said.’
+b) “He said, ‘Yes!'”
+c) ‘3\’
+d) ”’That’s okay”’
+View Answer Answer:  c
+Explanation: Carefully look at the colons.
+12. The following is displayed by a print function call. Select all of the function calls that result in this output.a) b) print(”’tomdickharry”’)
+c) print(‘tom\ndick\nharry’)
+d) 13. What is the average value of the following Python code snippet?a) 85.0
+b) 85.1
+c) 95.0
+d) 95.1
+View Answer Answer: a
+Explanation: Cause a decimal value of 0 to appear as output.
+14. Select all options that print.a) print(‘hello’, ‘how’, ‘are’, ‘you’)
+b) print(‘hello’, ‘how’, ‘are’, ‘you’ + ‘-‘ * 4)
+c) print(‘hello-‘ + ‘how-are-you’)
+d) print(‘hello’ + ‘-‘ + ‘how’ + ‘-‘ + ‘are’ + ‘you’)
+View Answer Answer: c
+Explanation: Execute in the shell.
+15. What is the return value of trunc()?
+a) int
+b) bool
+c) float
+d) None
+View Answer Answer: a
+Explanation: Execute help(math.trunc) to get details.
+Sanfoundry Global Education & Learning Series – Python.To practice all areas of Python, here is complete set of 1000+ Multiple Choice Questions and Answers.« Prev - Python Questions and Answers – Basic Operators» Next - Python Questions and Answers – Numeric Types		
+
+					
+				Categories Python MCQs 		
+			Post navigation
+
+			Python Questions and Answers – Basic OperatorsPython Questions and Answers – Numeric Types		
+					
+		
+
+
+    var adpushup = adpushup || {};
+    adpushup.que = adpushup.que || [];
+    adpushup.que.push(function() {
+        adpushup.triggerAd("040c3af8-fd79-4f97-ad79-651e02fc7b12");
+    });
+
+
+
+
+
+advertisement
+
+
+    var adpushup = adpushup || {};
+    adpushup.que = adpushup.que || [];
+    adpushup.que.push(function() {
+        adpushup.triggerAd("658ed863-6c61-464d-9aa2-c727da2a861a");
+    });
+
+
+
+
+         
+	
+	
+Recommended Posts:
+Java Programming Examples on Mathematical Functions 
+Java Programming Examples on Collections 
+C Programming Examples on Searching and Sorting 
+Simple C Programs 
+C# Programming Examples on Functions 
+Data Structure Questions and Answers 
+C Programming Examples on Data-Structures 
+C Programming Examples on Bitwise Operations 
+Data Structures & Algorithms II – Questions and Answers 
+C++ Programming Examples on Data-Structures 
+Java Programming Examples on Data-Structures 
+C# Programming Examples on Data Structures 
+Data Science Questions and Answers 
+Python Programming Examples 
+Python Programming Examples on Stacks & Queues 
+Python Programming Examples on Trees 
+Python Programming Examples on Graphs 
+Python Programming Examples on Linked Lists 
+Python Programming Examples on Searching and Sorting 
+Python Questions and Answers 
+
+
+	
+	
+
+advertisement
+
+
+    var adpushup = adpushup || {};
+    adpushup.que = adpushup.que || [];
+    adpushup.que.push(function() {
+        adpushup.triggerAd("eab65a1c-02cc-479a-a712-c5f542208b0a");
+    });
+
+
+
+
+        	
+
+ 
+
+
+
+
+Manish Bhojasia, a technology veteran with 20+ years @ Cisco & Wipro, is Founder and CTO at Sanfoundry. He is Linux Kernel Developer & SAN Architect and is passionate about competency developments in these areas. He lives in Bangalore and delivers focused training sessions to IT professionals in Linux Kernel, Linux Debugging, Linux Device Drivers, Linux Networking, Linux Storage, Advanced C Programming, SAN Storage Technologies, SCSI Internals & Storage Protocols such as iSCSI & Fiber Channel. Stay connected with him @
+LinkedIn 
+
+
+         
+        
+        
+        
+        		
+	
+
+	
+	
+		
+
+1000 Python MCQs
+
+
+
+
+Variable Names, Operators, Data Types & Numeric Types
+Variable Names
+Basic Operators
+Core Data Types
+Numeric Types
+
+Precedence & Associativity, Bitwise & Boolean
+Precedence Associativity-1
+Precedence Associativity-2
+Bitwise - 1
+Bitwise - 2
+Boolean
+
+Formatting & Decorators
+Formatting - 1
+Formatting - 2
+Advanced Formatting
+Decorators
+
+While & For Loops
+While & For Loops - 1
+While & For Loops - 2
+While & For Loops - 3
+While & For Loops - 4
+While & For Loops - 5
+While & For Loops - 6
+
+Strings
+Strings - 1
+Strings - 2
+Strings - 3
+Strings - 4
+Strings - 5
+Strings - 6
+Strings - 7
+Strings - 8
+Strings - 9
+Strings - 10
+Strings - 11
+Strings - 12
+Strings - 13
+
+Lists & List Comprehension
+Lists - 1
+Lists - 2
+Lists - 3
+Lists - 4
+Lists - 5
+Lists - 6
+Lists - 7
+List Comprehension
+List Comprehension - 1
+List Comprehension - 2
+Matrix List Comprehension
+
+Tuples & Sets
+Tuples - 1
+Tuples - 2
+Tuples - 3
+Sets - 1
+Sets - 2
+Sets - 3
+Sets - 4
+Sets - 5
+
+Dictionary, Functions & Built-in Functions
+Dictionary - 1
+Dictionary - 2
+Dictionary - 3
+Dictionary - 4
+Built-in Functions - 1
+Built-in Functions - 2
+Built-in Functions - 3
+Function - 1
+Function - 2
+Function - 3
+Function - 4
+
+Argument Passing, Variables & Recursion
+Argument Passing - 1
+Argument Passing - 2
+Global vs Local Variables-1
+Global vs Local Variables-2
+Recursion
+Shallow Copy vs Deep Copy
+
+Mapping Functions & Modules
+Functional Tools
+Mapping Functions - 1
+Mapping Functions - 2
+Mapping Functions - 3
+Python Modules
+Math - 1
+Math - 2
+Math - 3
+Datetime Module - 1
+Datetime Module - 2
+Random Module - 1
+Random Module - 2
+Sys Module
+Operating System
+Turtle Module - 1
+Turtle Module - 2
+Turtle Module - 3
+Pickle Module
+
+Regular Expressions & Files
+Regular Expressions
+Regular Expressions - 1
+Regular Expressions - 2
+Regular Expressions - 3
+Regular Expressions - 4
+Regular Expressions - 5
+Files - 1
+Files - 2
+Files - 3
+Files - 4
+Files - 5
+
+Classes, Objects, Inheritance & Exception Handling
+Operator Overloading
+Classes & Objects - 1
+Classes & Objects - 2
+Inheritance - 1
+Inheritance - 2
+Polymorphism
+Encapsulation
+Exception Handling - 1
+Exception Handling - 2
+Exception Handling - 3
+
+Best Reference Books
+Python Books
+
+
+
+
+
+
+    var adpushup = adpushup || {};
+    adpushup.que = adpushup.que || [];
+    adpushup.que.push(function() {
+        adpushup.triggerAd("f932df55-402b-4eb3-99df-f6f2e564b548");
+    });
+
+
+
+	Exercises & Tests
+Python Programming Tests
+Certification Test
+Internship Test
+Job Test
+Mock Test
+Top Rankers
+Practice Test - Chapter 1
+Practice Test - Chapter 2
+Practice Test - Chapter 3
+Practice Test - Chapter 4
+Practice Test - Chapter 5
+Practice Test - Chapter 6
+Practice Test - Chapter 7
+Practice Test - Chapter 8
+Practice Test - Chapter 9
+Practice Test - Chapter 10
+Mock Test - Chapter 1
+Mock Test - Chapter 2
+Mock Test - Chapter 3
+Mock Test - Chapter 4
+Mock Test - Chapter 5
+Mock Test - Chapter 6
+Mock Test - Chapter 7
+Mock Test - Chapter 8
+Mock Test - Chapter 9
+Mock Test - Chapter 10
+    
+
+			
+
+
+
+    var adpushup = adpushup || {};
+    adpushup.que = adpushup.que || [];
+    adpushup.que.push(function() {
+        adpushup.triggerAd("c02687cc-e3c1-4ea4-9bc7-d8fafbd90b16");
+    });
+
+
+
+        
+			
+
+
+	
+					
+
+
+
+    var adpushup = adpushup || {};
+    adpushup.que = adpushup.que || [];
+    adpushup.que.push(function() {
+        adpushup.triggerAd("e2124771-3969-40d9-b49f-be6ca0ef9aeb");
+    });
+
+
+
+        
+		Part Time Internships @ Home1-Day Campus Ambassador
+Content Developer
+Content Writer
+Programmer
+Digital Marketer			
+
+
+
+    var adpushup = adpushup || {};
+    adpushup.que = adpushup.que || [];
+    adpushup.que.push(function() {
+        adpushup.triggerAd("c702df7a-db9a-4387-b99f-0010e56c9aeb");
+    });
+
+
+
+	
+		Evergreen CareersDeveloper Tracks
+Linux Kernel Developer
+Linux Driver Developer
+Linux Network Developer
+SAN Developer			
+
+
+
+    var adpushup = adpushup || {};
+    adpushup.que = adpushup.que || [];
+    adpushup.que.push(function() {
+        adpushup.triggerAd("f1f620fc-81f8-425a-ac0f-57d3c30d77b0");
+    });
+
+
+
+	
+			
+
+
+	
+
+
+
+
+				
+				
+					
+							
+		
+About | Certifications | Internships | Jobs | Privacy Policy | Terms | Copyright | Contact 
+	
+						
+				
+			
+				
+			
+								
+					© 2011-2020 Sanfoundry. All Rights Reserved.				
+			
+		
+		
+
+
+				Scroll back to top
+				
+					
+			
+				Home
+Branchwise MCQs
+
+	Programming
+	CS – IT – IS
+	
+		CS
+		IT
+		IS
+	
+
+	ECE – EEE – EE
+	
+		ECE
+		EEE
+		EE
+	
+
+	Civil
+	Mechanical
+	Chemical
+	Metallurgy
+	Instrumentation
+	Aerospace
+	Aeronautical
+	Biotechnology
+	Agriculture
+	Marine
+	MCA
+	BCA
+
+
+Test & Rank
+
+	Sanfoundry Tests
+	Certification Tests
+	Internship Tests
+	Top-Rankers
+
+
+Internship
+Training
+
+1000 Python MCQs
+
+Variable Names, Operators, Data Types & Numeric Types
+Variable Names
+Basic Operators
+Core Data Types
+Numeric Types
+
+Precedence & Associativity, Bitwise & Boolean
+Precedence Associativity-1
+Precedence Associativity-2
+Bitwise - 1
+Bitwise - 2
+Boolean
+
+Formatting & Decorators
+Formatting - 1
+Formatting - 2
+Advanced Formatting
+Decorators
+
+While & For Loops
+While & For Loops - 1
+While & For Loops - 2
+While & For Loops - 3
+While & For Loops - 4
+While & For Loops - 5
+While & For Loops - 6
+
+Strings
+Strings - 1
+Strings - 2
+Strings - 3
+Strings - 4
+Strings - 5
+Strings - 6
+Strings - 7
+Strings - 8
+Strings - 9
+Strings - 10
+Strings - 11
+Strings - 12
+Strings - 13
+
+Lists & List Comprehension
+Lists - 1
+Lists - 2
+Lists - 3
+Lists - 4
+Lists - 5
+Lists - 6
+Lists - 7
+List Comprehension
+List Comprehension - 1
+List Comprehension - 2
+Matrix List Comprehension
+
+Tuples & Sets
+Tuples - 1
+Tuples - 2
+Tuples - 3
+Sets - 1
+Sets - 2
+Sets - 3
+Sets - 4
+Sets - 5
+
+Dictionary, Functions & Built-in Functions
+Dictionary - 1
+Dictionary - 2
+Dictionary - 3
+Dictionary - 4
+Built-in Functions - 1
+Built-in Functions - 2
+Built-in Functions - 3
+Function - 1
+Function - 2
+Function - 3
+Function - 4
+
+Argument Passing, Variables & Recursion
+Argument Passing - 1
+Argument Passing - 2
+Global vs Local Variables-1
+Global vs Local Variables-2
+Recursion
+Shallow Copy vs Deep Copy
+
+Mapping Functions & Modules
+Functional Tools
+Mapping Functions - 1
+Mapping Functions - 2
+Mapping Functions - 3
+Python Modules
+Math - 1
+Math - 2
+Math - 3
+Datetime Module - 1
+Datetime Module - 2
+Random Module - 1
+Random Module - 2
+Sys Module
+Operating System
+Turtle Module - 1
+Turtle Module - 2
+Turtle Module - 3
+Pickle Module
+
+Regular Expressions & Files
+Regular Expressions
+Regular Expressions - 1
+Regular Expressions - 2
+Regular Expressions - 3
+Regular Expressions - 4
+Regular Expressions - 5
+Files - 1
+Files - 2
+Files - 3
+Files - 4
+Files - 5
+
+Classes, Objects, Inheritance & Exception Handling
+Operator Overloading
+Classes & Objects - 1
+Classes & Objects - 2
+Inheritance - 1
+Inheritance - 2
+Polymorphism
+Encapsulation
+Exception Handling - 1
+Exception Handling - 2
+Exception Handling - 3
+
+Best Reference Books
+Python Books
+
+
+Exercises & Tests
+Python Programming Tests
+Certification Test
+Internship Test
+Job Test
+Mock Test
+Top Rankers
+Practice Test - Chapter 1
+Practice Test - Chapter 2
+Practice Test - Chapter 3
+Practice Test - Chapter 4
+Practice Test - Chapter 5
+Practice Test - Chapter 6
+Practice Test - Chapter 7
+Practice Test - Chapter 8
+Practice Test - Chapter 9
+Practice Test - Chapter 10
+Mock Test - Chapter 1
+Mock Test - Chapter 2
+Mock Test - Chapter 3
+Mock Test - Chapter 4
+Mock Test - Chapter 5
+Mock Test - Chapter 6
+Mock Test - Chapter 7
+Mock Test - Chapter 8
+Mock Test - Chapter 9
+Mock Test - Chapter 10
+    
+ 			
+		
+
+					
+									
+												Close
+					
+							
+		
+var colomatduration = 'fast';
+var colomatslideEffect = 'slideFade';
+var colomatpauseInit = '';
+var colomattouchstart = '';
+
+
+
+
+
+/* <![CDATA[ */
+var offSide = {"side":"left"};
+/* ]]> */
+
+
+
+/* <![CDATA[ */
+var countVars = {"disqusShortname":"sanfoundry"};
+/* ]]> */
+
+
+
+
+
+
+
+/* <![CDATA[ */
+var generatepressNavSearch = {"open":"Open Search Bar","close":"Close Search Bar"};
+/* ]]> */
+
+
+
+
+
+/* <![CDATA[ */
+var q2w3_sidebar_options = [{"sidebar":"sidebar-1","margin_top":10,"margin_bottom":10,"stop_id":"footer-widgets","screen_max_width":0,"screen_max_height":0,"width_inherit":false,"refresh_interval":1500,"window_load_hook":false,"disable_mo_api":false,"widgets":["text-296"]},{"sidebar":"sidebar-2","margin_top":10,"margin_bottom":10,"stop_id":"footer-widgets","screen_max_width":0,"screen_max_height":0,"width_inherit":false,"refresh_interval":1500,"window_load_hook":false,"disable_mo_api":false,"widgets":["text-292"]}];
+/* ]]> */
+
+
+
+
+
+
+
+
+
+

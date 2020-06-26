@@ -13,7 +13,6 @@ import requests
 from html.parser import HTMLParser
 
 google_news_url = "https://news.google.com/news/rss"
-quiz_url = "https://www.sanfoundry.com/python-questions-answers-variable-names/"
 
 # class MyHTMLParser(HTMLParser):
 #     start_tag = None
@@ -69,7 +68,6 @@ class MyHTMLParser(HTMLParser):
 def parse_html(url, file):
     f = open(file, "x")
     r = requests.get(url)
-    print(r.text)
     parser = MyHTMLParser()
     parser.feed(r.text)
     for i in parser.data:
@@ -77,5 +75,5 @@ def parse_html(url, file):
     f.close()
 
 
-parse_html(quiz_url, "sanfoundry1.txt")
-# print(parse_html(quiz_url))
+quiz_url = "https://www.sanfoundry.com/python-mcqs-core-datatypes/"
+parse_html(quiz_url, "scraped texts\sanfoundry2.txt")

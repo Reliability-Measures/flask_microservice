@@ -75,15 +75,15 @@ def create_items_from_file(file, subject):
                 "tags": {
                     "item_text": "",
                     "item_type": "Multiple Choice",
-                    "subject": "AWS"
+                    "subject": subject
                 },
                 "item_choices": []
             }
-        elif len(line.split('. ')) > 1:
+        elif len(line.split('. ')) == 2:
             item['tags']['item_text'] = line.split('. ')[1].replace('\n', '')
-        elif len(line.split(') ')) > 1:
+        elif len(line.split(') ')) == 2:
             item['item_choices'].append({'choice': line.split(') ')[1].replace('\n', ''), 'correct': 0})
-        elif len(line.split(': ')) > 1:
+        elif len(line.split(': ')) == 2:
             answers.append(ord(line.split(': ')[1][0].upper())-65)
 
     for j in questions:
@@ -94,6 +94,6 @@ def create_items_from_file(file, subject):
     return questions
 
 
-items = create_items_from_file("sanfoundry2.txt", "Computer Science")
+items = create_items_from_file("scraped texts\sanfoundry3.txt", "Computer Science")
 for i in items:
     insert_item(i)
