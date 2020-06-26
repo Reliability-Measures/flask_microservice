@@ -8,10 +8,10 @@ https://umich.instructure.com/files/2330198/download?download_frd=1&verifier=hwd
 
 
 # Plan: convert questions from site into same format as 'aws CCL sample exam.txt' with scraper, then run this function.
-def create_items_from_file():
+def create_items_from_file(file):
     questions = []
     answers = []
-    f = open("aws CCL sample exam.txt", "r")
+    f = open(file, "r")
     reached_ans = False
     got_question = False
     item = {
@@ -59,16 +59,16 @@ def create_items_from_file():
             else:
                 item['item_choices'].append({'choice': line.split(') ')[1].replace('\n', ''), 'correct': 0})
         else:
-            answers.append(ord(line.split(') ')[1][0])-65)
+            answers.append(ord(line.split(') ')[1][0].upper())-65)
 
-    for i in questions:
-        ans = answers[questions.index(i)]
-        i['item_choices'][ans]['correct'] = 1
+    for j in questions:
+        ans = answers[questions.index(j)]
+        j['item_choices'][ans]['correct'] = 1
 
     f.close()
     return questions
 
 
-items = create_items_from_file()
+items = create_items_from_file("sanfoundry1.txt")
 for i in items:
     insert_item(i)

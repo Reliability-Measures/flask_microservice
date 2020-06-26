@@ -13,7 +13,7 @@ import requests
 from html.parser import HTMLParser
 
 google_news_url = "https://news.google.com/news/rss"
-quiz_url = "https://www.sanfoundry.com/python-questions-answers-variable-names/"
+quiz_url = "https://www.geeksforgeeks.org/functions-python-gq/"
 
 # class MyHTMLParser(HTMLParser):
 #     start_tag = None
@@ -47,34 +47,35 @@ quiz_url = "https://www.sanfoundry.com/python-questions-answers-variable-names/"
 
 class MyHTMLParser(HTMLParser):
     start_tag = None
-    questions = []
-    answers = []
+    data = []
 
     def handle_starttag(self, tag, attrs):
         if tag == 'p':
             self.start_tag = tag
-            print("Encountered a start tag:", tag)
+            #print("Encountered a start tag:", tag)
 
     def handle_endtag(self, tag):
         if tag == self.start_tag:
-            print("Encountered an end tag :", tag)
+            #print("Encountered an end tag :", tag)
             self.start_tag = None
 
     def handle_data(self, data):
         if self.start_tag:
-            print("Encountered some data  :", data)
+            #print("Encountered some data  :", data)
+            self.data.append(data)
 
 
 # WIP
-def parse_html(url):
-    questions = []
+def parse_html(url, file):
+    f = open(file, "x")
     r = requests.get(url)
+    print(r.text)
     parser = MyHTMLParser()
     parser.feed(r.text)
-    for i in parser.questions:
-        questions.append(i)
-    return questions
+    for i in parser.data:
+        f.write(i)
+    f.close()
 
 
-parse_html(quiz_url)
+parse_html(quiz_url, "gfg1.text")
 # print(parse_html(quiz_url))
