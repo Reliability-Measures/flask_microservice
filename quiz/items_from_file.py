@@ -6,7 +6,6 @@ https://umich.instructure.com/files/2330198/download?download_frd=1&verifier=hwd
 
 """
 
-
 # Plan: convert questions from site into same format as 'aws CCL sample exam.txt' with scraper, then run this function.
 def create_items_from_file():
     questions = []
@@ -25,7 +24,7 @@ def create_items_from_file():
         "tags": {
             "item_text": "",
             "item_type": "Multiple Choice",
-            "subject": "AWS"
+            "subject": "Computer Technology"
         },
         "item_choices": []
     }
@@ -48,7 +47,7 @@ def create_items_from_file():
                     "tags": {
                         "item_text": "",
                         "item_type": "Multiple Choice",
-                        "subject": "AWS"
+                        "subject": "Computer Technology"
                     },
                     "item_choices": []
                 }
@@ -68,7 +67,9 @@ def create_items_from_file():
     f.close()
     return questions
 
+import json
 
 items = create_items_from_file()
 for i in items:
-    insert_item(i)
+    print(json.dumps(i, indent=4))
+    #insert_item(i)

@@ -76,5 +76,5 @@ def parse_html(url):
     return questions
 
 
-parse_html(quiz_url)
-# print(parse_html(quiz_url))
+#parse_html(quiz_url)
+print(parse_html(quiz_url))

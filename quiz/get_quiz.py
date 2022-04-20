@@ -39,6 +39,7 @@ def get_items_db(json_data):
     results = sorted(results, key=lambda pos: pos['id'])
 
     for result in results:
+        answer = result.get('answer', {})
         result['choices'] = json.loads(result.get('choices', {}))
         result['metadata'] = json.loads(result.get('metadata', {}))
         try:
@@ -46,17 +47,17 @@ def get_items_db(json_data):
             result['sub_topics'] = json.loads(result['sub_topics'])
         except:
             pass
-        result['answer'] = json.loads(result.get('answer', {}))
+        result['answer'] = json.loads(answer)
 
     return {'items': results, 'total_items': len(results)}
 
 
 def get_quiz_form_db(json_data):
     user_id = json_data.get('user_id')
-    user_profile = json_data.get('user_profile')
+    user_profile = json_data.get('user_profile', {})
     limit = json_data.get('limit', 500)
 
-    user_email = user_profile.get('email')
+    user_email = user_profile.get('email') or user_id
     user_id = user_profile.get('googleId')
 
     # get all items by user
@@ -157,13 +158,15 @@ if __name__ == '__main__':
     print(get_config("admin_users"))
     print(get_config("admin_user_ids"))
 
-    json_data = {'user_id': "info@reliabilitymeasures.com", 'limit': 5}
-    #print(json.dumps(get_quiz_form_db(json_data), indent=4,
-    #                 default=decimal_default))
+    user_profile = {"googleId": '117366695156565046594', "email": "info@reliabilitymeasures.com"}
+    json_data = {'user_id': "info@reliabilitymeasures.com", 'limit': 10,
+                 'user_profile': user_profile}
+    print(json.dumps(get_quiz_form_db(json_data), indent=4,
+                     default=decimal_default))
 
-    json_data = {'subject': "Islam", 'limit': 5, "user_id": "",
-                 "keyword": "Scholar"}
-    print(json.dumps(get_items_db(json_data), indent=4))
+    json_data = {'subject': "Islam", 'limit': 50, "user_id": "",
+                 "keyword": "fiqh"}
+    #print(json.dumps(get_items_db(json_data), indent=4))
 
     json_data = {'id': 98, 'name': 'test'}
     json_data = {'keyword': '2020'}

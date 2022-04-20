@@ -22,6 +22,7 @@ def process_request(fn, json_data=None):
         inp = json.loads(json_data)
 
         ans = fn(inp)  # calling function 'fn'
+        print(ans)
         ans['Input'] = inp
     except Exception as exc:
         ans = {"error": str(exc), 'input': json_data}

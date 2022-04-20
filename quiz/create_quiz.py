@@ -6,7 +6,7 @@ import threading
 
 from common.config import initialize_config
 from quiz.quiz_queries import queries, connect_and_query, insert_sqls, \
-     connect_and_execute
+     connect_and_execute, delete_sqls
 from providers.google.google_run_app_script import run_app_script, \
     GoogleCredentials
 from quiz.type_map import get_type_from_id
@@ -211,11 +211,39 @@ if __name__ == '__main__':
     # http://api2.reliabilitymeasures.com/create_form/?input={"quiz_description":"Test","quiz_name":"Form 1","item_ids":[2,45,6,9,25]}
     # http://api2.reliabilitymeasures.com/get_items/?input={"subject":"Islam","limit":10}
 
-    ids = [199,198,197]
+    #sql = delete_sqls[1].format(','.join(map(str, [163,164, 165, 166])))
+    #print(sql)
+    #connect_and_query(sql)
+
+    ids = [484, 479, 476, 474, 458]
+    #sql = queries[11].format(','.join(map(str, [306, 2])))
+    #print(sql)
+
+    #results = connect_and_query(sql)
+    #print(json.dumps(results, indent=4))
+
+    #exit(0)
 
     # ids = [131,132]
-    json_data = {'quiz_description': 'Test main', 'quiz_name': 'Form main',
-                 'item_ids': ids, 'options': {}}
+    user = {'email': 'info@reliabilitymeasures.com', "givenName": "Reliability Measures"}
+    json_data = {'quiz_description': '''Jazak Allah Khair for participating in these Ramadan quizzes.
+See All quizzes for this year here: https://muslimscholars.info/Ramadan2022/
+''',
+
+                 'quiz_name': 'Ramadan 1443/2022 Quiz 19',
+                 'user_profile': user,
+                 'item_ids': ids,
+                 'options': {'email': 0, 'name': 1, 'show_correct': 1}}
+    # json_data = {'quiz_description': '''We are very grateful for your overwhelming response, support and feedback to our daily Ramadan quizzes.
+    #     Overall, we received about 4000 entries. This is the last quiz for this Ramadan.
+    # See previous quizzes here: https://muslimscholars.info/Ramadan2021/
+    #
+    # الْلَّهُمَّ اِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي''',
+    #
+    #              'quiz_name': 'Ramadan 2021/1442 Quiz 25',
+    #              'user_profile': user,
+    #              'item_ids': ids,
+    #              'options': {'email': 0, 'name': 1, 'show_correct': 1}}
     print(json.dumps(create_quiz_form_db(json_data), indent=4))
 
     # json_data = {'user_id': "farrukh503@gmail.com", 'limit': 10}

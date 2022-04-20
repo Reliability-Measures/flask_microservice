@@ -55,21 +55,23 @@ logger = logging.getLogger(__name__)
 
 @app.errorhandler(Exception)
 def unhandled_exception(e):
-    logger.error('Unhandled Exception: %s' % str(e))
+    logger.error('Unhandled Exception: %s, %s' % (str(e), request.path))
     return index(str(e), 500)
 
 
+@cross_origin()
 @app.route('/', methods=['POST', 'GET'])
 def index(error=None, code=200):
-    return jsonify(
-        {
+    resp = {
             "message": "Welcome from Reliability Measures!",
             "version": get_config('application_version'),
             'python_version': sys.version.split()[0],
-            "error": error,
+            "route": request.path,
             "status_code": code
-        }
-    )
+    }
+    if error:
+        resp["error"] = error
+    return jsonify(resp)
 
 
 @app.route('/std/', methods=['POST', 'GET'])

@@ -97,7 +97,7 @@ FROM `students` group by description order by cast(substring(description, 5) as 
 
     "select id, text, subject, topic, sub_topics, type, "
     "choices, metadata, answer "
-    "from items where id in ({0}) and status<>0",  # for creating quiz (11)
+    "from items where id in ({0}) and status<>0 ORDER BY FIELD(id, {0})",  # for creating quiz (11)
 
     # get items by user (12)
     "select id, text, subject, topic, sub_topics, type, choices, metadata, "
@@ -180,6 +180,11 @@ insert_sqls = [
     "INSERT INTO exams(`id`, `name`, `description`) " \
     "VALUES (%s, %s, %s)"
 
+]
+
+delete_sqls = [
+    "delete from items where id in ({0})",
+    "delete from exams where id in ({0})",
 ]
 
 db = None

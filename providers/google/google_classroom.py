@@ -180,6 +180,7 @@ if __name__ == '__main__':
     courses = list_courses(creds)
     print("**********************************")
     for course in courses:
+        print(course)
         course_works = list_course_work(creds, course_id=course['id'])
 
         students = list_students_teachers(creds, course_id=course['id'])
